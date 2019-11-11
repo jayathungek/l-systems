@@ -1,0 +1,10 @@
+{"alphabet": ["A", "B"],
+ "rules": [{"in": "A", 
+ 			"out": "AB"}, 
+
+ 		   {"in": "B",
+ 		    "out": "A"}],
+ "axiom": "A",
+ "iterations": 2,
+ "animate": false,
+ "graphics_class": "AlgaeHandler"}
