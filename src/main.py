@@ -39,7 +39,7 @@ def draw(lstrings, handler):
 def print_help():
 	msg= """lsystems help
 -------------------------------------------
-Usage: python3 main.py settings
+Usage: python main.py settings
 	where settings is a JSON file whose object
 	has the following mandatory fields:
 	{
@@ -49,7 +49,7 @@ Usage: python3 main.py settings
 		'graphics_class': string,
 		'rules': [...]
 	}
-	
+
 	'alphabet' is a list of ALL valid characters
 	that are allowed in the L-system
 	 
@@ -94,7 +94,7 @@ def parse_args(args):
 	if err != 0:
 		return err
 
-	err = import_handler(SETTINGS[graphics_class])
+	err = import_handler(SETTINGS["graphics_class"])
 	if err != 0:
 		return err
 
