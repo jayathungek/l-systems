@@ -3,6 +3,8 @@ turtle.speed(0)
 turtle.delay(0)
 turtle.ht()
 turtle.up()
+turtle.pencolor("#D6B5B5")
+BACKGROUND = "#252525"
 
 class DragonHandler:
 	def __init__(self, settings):
@@ -10,11 +12,11 @@ class DragonHandler:
 		self.angle = settings["angle"]
 		self.width = 500
 		self.height = 500
-		self.bg = "#252C2B"
+		self.bg = BACKGROUND
 
 		turtle.screensize(self.width, self.height, self.bg)
 		turtle.degrees(360) 
-		turtle.setpos(0, 0)
+		turtle.setpos(-self.width/4, 0)
 		turtle.setheading(90) 
 
 
@@ -40,7 +42,7 @@ class KochHandler:
 		self.angle = settings["angle"]
 		self.width = 500
 		self.height = 500
-		self.bg = "#252C2B"
+		self.bg = BACKGROUND
 
 		turtle.screensize(self.width, self.height, self.bg) 
 		turtle.degrees(360) 	
@@ -69,7 +71,7 @@ class PlantHandler:
 		self.angle = settings["angle"]
 		self.width = 500
 		self.height = 500
-		self.bg = "#252C2B"
+		self.bg = BACKGROUND
 		self.stack = []
 
 		turtle.screensize(self.width, self.height, self.bg) 
@@ -109,7 +111,7 @@ class BTreeHandler:
 		self.angle = settings["angle"]
 		self.width = 500
 		self.height = 500
-		self.bg = "#252C2B"
+		self.bg = BACKGROUND
 		self.stack = []
 
 		turtle.screensize(self.width, self.height, self.bg) 
