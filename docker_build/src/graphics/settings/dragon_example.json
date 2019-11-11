@@ -1,0 +1,14 @@
+{"alphabet": ["F", "X", "Y", "-", "+"],
+ "axiom": "FX+FX+",
+ "rules": [
+ 			{"in": "X", 
+ 			"out": "X+YF"},
+ 			
+ 			{"in": "Y", 
+ 			"out": "FX-Y"}
+ 		  ],
+ "iterations": 10,
+ "angle": 90,
+ "animate": false,
+ "length": 8,
+ "graphics_class": "DragonHandler"}

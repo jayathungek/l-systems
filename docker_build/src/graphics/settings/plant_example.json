@@ -1,0 +1,14 @@
+{"alphabet": ["X", "F", "-", "+", "[", "]"],
+ "axiom": "X",
+ "rules": [
+ 			{"in": "F", 
+ 			"out": "FF"},
+
+ 			{"in": "X", 
+ 			"out": " F+[[X]-X]-F[-FX]+X"}
+ 		  ],
+ "length": 5,
+ "iterations": 5,
+ "angle": 25,
+ "animate": false,
+ "graphics_class": "PlantHandler"}
