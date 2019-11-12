@@ -3,11 +3,13 @@ import json
 import sys 
 import graphics.handlers as gh
 
+DEFAULT_IMG_DIR = "../img/"
 ERROR_CODES = {
 	1: "NoSettingsPassed",
 	2: "TooManyFilesPassed",
 	3: "BadJSONFormat",
-	4: "NoGraphicsHandler"
+	4: "NoGraphicsHandler",
+	5: "FileDoesNotExist"
 }
 
 #Global variables
@@ -19,8 +21,10 @@ def get_settings_from_json(filename):
 	try:
 		with open(filename, 'r') as f:
 		    SETTINGS = json.load(f) 
-	except Exception as e:
+	except json.decoder.JSONDecodeError as e:
 		return 3
+	except FileNotFoundError as e:
+		return 5
 	return 0
 
 def import_handler(graphics_class):
@@ -28,13 +32,13 @@ def import_handler(graphics_class):
 	try:
 		handler = getattr(gh, graphics_class)
 		HANDLER_INSTANCE = handler(SETTINGS)
-	except Exception as e:
+	except AttributeError as e:
 		return 4
 
 	return 0
 
-def draw(lstrings, handler):
-	handler.draw(lstrings)
+def out(lstrings, handler, outfile=DEFAULT_IMG_DIR):
+	handler.create_image(lstrings, outfile)
 
 def print_help():
 	msg= """lsystems help
@@ -105,12 +109,12 @@ def main():
 	err = parse_args(args)
 	if err != 0:
 		print_error(err)
-		print_help()
+		# print_help()
 		exit()
 
 	lsg = Generator(SETTINGS)
 	lstrings = lsg.generate()
-	draw(lstrings, HANDLER_INSTANCE)
+	out(lstrings, HANDLER_INSTANCE)
 
 
 if __name__ == "__main__": main()

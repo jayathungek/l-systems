@@ -1,143 +1,135 @@
-import turtle
-turtle.speed(0)
-turtle.delay(0)
-turtle.ht()
-turtle.up()
-turtle.pencolor("#D6B5B5")
-BACKGROUND = "#252525"
+from .pen import Pen
+
 
 class DragonHandler:
 	def __init__(self, settings):
+		self.name = "dragon"
 		self.length = settings["length"]
 		self.angle = settings["angle"]
-		self.width = 500
-		self.height = 500
-		self.bg = BACKGROUND
-
-		turtle.screensize(self.width, self.height, self.bg)
-		turtle.degrees(360) 
-		turtle.setpos(-self.width/4, 0)
-		turtle.setheading(90) 
+		self.size = (500, 500)
+		self.startpos = (self.size[0]/2, self.size[0]/4)
+		self.pen = Pen(self.size, self.startpos)
 
 
 	def execute_command(self, command):
-		curr_heading = turtle.heading()
+		curr_heading = 	self.pen.get_heading()
 		if command == "F":
-			turtle.forward(self.length)
+			self.pen.forward(self.length)
 		elif command == "+":
-			turtle.right(self.angle)
+			self.pen.right(self.angle)
 		elif command == "-":
-			turtle.left(self.angle)
+			self.pen.left(self.angle)
 
-	def draw(self, strings):
-		turtle.down()
+	def create_image(self, strings, directory):
+		self.pen.down()
 		for string in strings:
 			for command in string:
 				self.execute_command(command)
-		turtle.done()
+		self.pen.show()
+		self.pen.save(directory + self.name)
 
 class KochHandler:
 	def __init__(self, settings):
+		self.name = "koch"
 		self.length = settings["length"]
 		self.angle = settings["angle"]
-		self.width = 500
-		self.height = 500
-		self.bg = BACKGROUND
-
-		turtle.screensize(self.width, self.height, self.bg) 
-		turtle.degrees(360) 	
-		turtle.setpos(-self.width/2, -self.height/2)
+		self.size = (500, 500)
+		self.startpos = (0, self.size[1])
+		self.pen = Pen(self.size, self.startpos)
+ 
 
 
 	def execute_command(self, command):
-		curr_heading = turtle.heading()
+		curr_heading = self.pen.get_heading()
 		if command == "F":
-			turtle.forward(self.length)
+			self.pen.forward(self.length)
 		elif command == "-":
-			turtle.right(self.angle)
+			self.pen.right(self.angle)
 		elif command == "+":
-			turtle.left(self.angle)
+			self.pen.left(self.angle)
 
-	def draw(self, strings):
-		turtle.down()
+	def create_image(self, strings, directory):
+		self.pen.down()
 		for string in strings:
 			for command in string:
 				self.execute_command(command)
-		turtle.done()
+		self.pen.show()
+		self.pen.save(directory + self.name)
+		
 
 class PlantHandler:
 	def __init__(self, settings):
+		self.name = "plant"
 		self.length = settings["length"]
 		self.angle = settings["angle"]
-		self.width = 500
-		self.height = 500
-		self.bg = BACKGROUND
+		self.size = (500, 500)
+		self.startpos = (self.size[0]/2, self.size[1])
+		self.pen = Pen(self.size, self.startpos) 
+		self.pen.set_heading(-90)
 		self.stack = []
-
-		turtle.screensize(self.width, self.height, self.bg) 
-		turtle.degrees(360) 	
-		turtle.setheading(90)
-		turtle.setpos(0, -self.height/2)
+ 
 
 
 	def execute_command(self, command):
-		curr_heading = turtle.heading()
+		curr_heading = self.pen.get_heading()
 		if command == "F":
-			turtle.forward(self.length)
+			self.pen.forward(self.length)
 		elif command == "-":
-			turtle.right(self.angle)
+			self.pen.right(self.angle)
 		elif command == "+":
-			turtle.left(self.angle)
+			self.pen.left(self.angle)
 		elif command == "[":
-			self.stack.append({"pos": turtle.pos(), "heading": turtle.heading()})
+			self.stack.append({"pos": self.pen.get_pos(), "heading": self.pen.get_heading()})
 		elif command == "]":
 			cmd = self.stack.pop()
-			turtle.up()
-			turtle.setheading(cmd["heading"])
-			turtle.setpos(cmd["pos"])
-			turtle.down()
+			self.pen.up()
+			self.pen.set_heading(cmd["heading"])
+			self.pen.set_pos(cmd["pos"])
+			self.pen.down()
 
-	def draw(self, strings):
-		turtle.down()
+	def create_image(self, strings, directory):
+		self.pen.down()
 		for string in strings:
 			for command in string:
 				self.execute_command(command)
-		turtle.done()
+
+		self.pen.show()
+		self.pen.save(directory + self.name)
+		
 
 
 class BTreeHandler:
 	def __init__(self, settings):
+		self.name = "btree"
 		self.length = settings["length"]
 		self.angle = settings["angle"]
-		self.width = 500
-		self.height = 500
-		self.bg = BACKGROUND
+		self.size = (500, 500)
+		self.startpos = (self.size[0]/2, self.size[1]+100)
+		self.pen = Pen(self.size, self.startpos)
+		self.pen.set_heading(-90)
 		self.stack = []
-
-		turtle.screensize(self.width, self.height, self.bg) 
-		turtle.degrees(360) 	
-		turtle.setheading(90)
-		turtle.setpos(0, -self.height/2)
-
+ 
 
 	def execute_command(self, command):
-		curr_heading = turtle.heading()
+		curr_heading = self.pen.get_heading()
 		if command == "0" or command == "1":
-			turtle.forward(self.length) 
+			self.pen.forward(self.length) 
 		elif command == "[":
-			self.stack.append({"pos": turtle.pos(), "heading": turtle.heading()})
-			turtle.left(self.angle) 
+			self.stack.append({"pos": self.pen.get_pos(), "heading": self.pen.get_heading()})
+			self.pen.left(self.angle) 
 		elif command == "]":
 			cmd = self.stack.pop()
-			turtle.up()
-			turtle.setheading(cmd["heading"])
-			turtle.setpos(cmd["pos"])
-			turtle.right(self.angle)
-			turtle.down()
+			self.pen.up()
+			self.pen.set_heading(cmd["heading"])
+			self.pen.set_pos(cmd["pos"])
+			self.pen.right(self.angle)
+			self.pen.down()
 
-	def draw(self, strings):
-		turtle.down()
+	def create_image(self, strings, directory):
+		self.pen.down()
 		for string in strings:
 			for command in string:
 				self.execute_command(command) 
-		turtle.done()
+		self.pen.show()
+		self.pen.save(directory + self.name)
+		
