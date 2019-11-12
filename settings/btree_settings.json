@@ -1,0 +1,14 @@
+{"alphabet": ["0", "1", "[", "]"],
+ "axiom": "0",
+ "rules": [
+ 			{"in": "0", 
+ 			"out": "1[0]0"},
+
+ 			{"in": "1", 
+ 			"out": "11"} 
+ 		  ],
+ "iterations": 6,
+ "angle": 45,
+ "animate": false,
+ "length": 10,
+ "graphics_class": "BTreeHandler"}
