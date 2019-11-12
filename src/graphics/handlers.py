@@ -1,6 +1,7 @@
 from .pen import Pen
 
-
+IMG_EXT = ".png"
+GIF_EXT = ".gif"
 class DragonHandler:
 	def __init__(self, settings):
 		self.name = "dragon"
@@ -26,7 +27,7 @@ class DragonHandler:
 			for command in string:
 				self.execute_command(command)
 		self.pen.show()
-		self.pen.save(directory + self.name)
+		self.pen.save(directory + self.name + IMG_EXT)
 
 class KochHandler:
 	def __init__(self, settings):
@@ -54,7 +55,7 @@ class KochHandler:
 			for command in string:
 				self.execute_command(command)
 		self.pen.show()
-		self.pen.save(directory + self.name)
+		self.pen.save(directory + self.name + IMG_EXT)
 		
 
 class PlantHandler:
@@ -94,7 +95,7 @@ class PlantHandler:
 				self.execute_command(command)
 
 		self.pen.show()
-		self.pen.save(directory + self.name)
+		self.pen.save(directory + self.name + IMG_EXT)
 		
 
 
@@ -131,5 +132,5 @@ class BTreeHandler:
 			for command in string:
 				self.execute_command(command) 
 		self.pen.show()
-		self.pen.save(directory + self.name)
+		self.pen.save(directory + self.name + IMG_EXT)
 		
