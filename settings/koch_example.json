@@ -1,4 +1,4 @@
-{"alphabet": ["F", "-", "+"],
+{"alphabet": "F-+",
  "axiom": "F",
  "rules": [
  			{"in": "F", 

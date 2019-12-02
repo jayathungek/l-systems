@@ -1,4 +1,4 @@
-{"alphabet": ["X", "F", "-", "+", "[", "]"],
+{"alphabet": "XF-+[]",
  "axiom": "X",
  "rules": [
  			{"in": "F", 
@@ -10,5 +10,5 @@
  "length": 5,
  "iterations": 5,
  "angle": 25,
- "animate": false,
+ "animate": true,
  "graphics_class": "PlantHandler"}
