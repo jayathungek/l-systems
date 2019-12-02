@@ -64,6 +64,9 @@ class Pen:
 	def save(self, filename):
 		self.image.save(filename, 'PNG')
 
+	def get_image(self):
+		return self.image
+
 
 
 
