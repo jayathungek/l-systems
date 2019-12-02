@@ -4,13 +4,11 @@ class Generator:
 		self.axiom = settings["axiom"]
 		self.rules = settings["rules"]
 		self.iterations = settings["iterations"]
-		self.animate = settings["animate"]
-		self.lsequence = []
+		self.animate = settings["animate"] 
 
 	def generate(self):
 		n = self.iterations
-		sentence = self.axiom
-		self.lsequence.append(self.axiom)
+		sentence = self.axiom 
 		while n > 0:
 			new_sentence = ""
 			for char in sentence:
@@ -22,10 +20,6 @@ class Generator:
 						break
 				if not rule_found:
 					new_sentence += char
-			sentence = new_sentence
-			self.lsequence.append(sentence)
+			sentence = new_sentence 
 			n -= 1
-		if self.animate:
-			return self.lsequence
-		else:
-			return [self.lsequence[-1]]
+		return sentence

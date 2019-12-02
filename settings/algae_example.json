@@ -1,4 +1,4 @@
-{"alphabet": ["A", "B"],
+{"alphabet": "AB",
  "rules": [{"in": "A", 
  			"out": "AB"}, 
 
