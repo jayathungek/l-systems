@@ -1,44 +1,26 @@
 from lsystem import Generator
 import json
 import sys 
+import error
 import graphics.handlers as gh
+from graphics.handlers import Util
 
 DEFAULT_IMG_DIR = "../img/"
+REQUIRED_FIELDS = ["alphabet", "axiom", "rules", "iterations", "animate", "graphics_class"]
 ERROR_CODES = {
 	1: "NoSettingsPassed",
 	2: "TooManyFilesPassed",
 	3: "BadJSONFormat",
 	4: "NoGraphicsHandler",
-	5: "FileDoesNotExist"
+	5: "FileDoesNotExist",
+	6: "MissingRequiredField",
+	7: "SymbolNotInAlphabet",
+	8: "IterationsCannotBeNegative"
 }
 
 #Global variables
 SETTINGS = {}
 HANDLER_INSTANCE = None
-
-def get_settings_from_json(filename):
-	global SETTINGS 
-	try:
-		with open(filename, 'r') as f:
-		    SETTINGS = json.load(f) 
-	except json.decoder.JSONDecodeError as e:
-		return 3
-	except FileNotFoundError as e:
-		return 5
-	return 0
-
-def import_handler(graphics_class):
-	global HANDLER_INSTANCE
-	try:
-		handler = getattr(gh, graphics_class)
-		HANDLER_INSTANCE = handler(SETTINGS)
-	except AttributeError as e:
-		return 4
-
-	return 0
-
-def out(lstrings, handler, outfile=DEFAULT_IMG_DIR):
-	handler.create_image(lstrings, outfile)
 
 def print_help():
 	msg= """lsystems help
@@ -83,35 +65,94 @@ examples in graphics/settings"""
 	   
 	print(msg)
 
+def get_missing_fields(original, test):
+	diff = []
+	for field in test:
+		if field not in original:
+			diff.append(field)
+
+	missing = []
+	for field in diff:
+		if field in original:
+			missing.append(field)
+
+	return missing
+
+def get_settings_from_json(filename):
+	global SETTINGS
+	print("using settings file: " + filename)
+	try:
+		with open(filename, 'r') as f:
+		    SETTINGS = json.load(f) 
+	except json.decoder.JSONDecodeError as e:
+		print ("Bad JSON format, fix errors in JSON file.")
+		return
+	except FileNotFoundError as e:
+		print("File {} does not exist. Check file path for typos.".format(filename))
+		return
+
+def import_handler(graphics_class):
+	global HANDLER_INSTANCE
+	try:
+		handler = getattr(gh, graphics_class)
+		HANDLER_INSTANCE = handler(SETTINGS)
+	except AttributeError as e:
+		print("Graphics handler {} does not exist. Select one that does.".format(graphics_class))
+		return
+
+def out(lstrings, handler, outfile=DEFAULT_IMG_DIR):
+	handler.create_image(lstrings, outfile)
+
+
 def print_error(err):
 	msg = "There was a problem with your command: " 
 	msg += ERROR_CODES[err]
 	print(msg)
 
 def parse_args(args):
-	if len(args) == 1:
-		return 1
-	elif len(args) > 2:
-		return 2
+	if len(args) != 2:
+		raise error.IncorrectArgsNumberError(len(args))
 
 	err = get_settings_from_json(args[1])
-	if err != 0:
-		return err
 
 	err = import_handler(SETTINGS["graphics_class"])
-	if err != 0:
-		return err
+
+def validate_string(string, alphabet):
+	for symbol in string:
+		if symbol not in alphabet:
+			raise error.SymbolNotInAlphabetError(symbol, alphabet)
+
+def validate_input():
+	missing = get_missing_fields(REQUIRED_FIELDS, SETTINGS.keys())
+	if len(missing) > 0:
+		raise error.MissingRequiredFieldsError(missing)
+
+	alphabet = SETTINGS["alphabet"]
+	axiom = SETTINGS["axiom"]
+	rules = SETTINGS["rules"]
+	iterations = SETTINGS["iterations"]
+	
+	validate_string(axiom, alphabet)		
+
+	for rule in rules:
+		validate_string(rule["in"], alphabet)
+		validate_string(rule["out"], alphabet)
+
+	if iterations < 0:
+		raise error.NegativeFieldError(iterations)
 
 	return 0
 
+
 def main():
 	args = sys.argv
-	err = parse_args(args)
-	if err != 0:
-		print_error(err)
-		# print_help()
-		exit()
-
+	try:
+		parse_args(args)
+		validate_input()
+	except error.Error as e:
+		print (e.message)
+		return
+	
 	lsg = Generator(SETTINGS)
 	lstrings = lsg.generate()
 	out(lstrings, HANDLER_INSTANCE)
