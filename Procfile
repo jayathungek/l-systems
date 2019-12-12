@@ -1,1 +1,1 @@
-web: gunicorn lsystemsgifs:app
+web: gunicorn app:app
