@@ -64,9 +64,6 @@ class GifMaker:
 		self.images.append(image) 
 
 	def save_gif(self,  gif_name):
-		# with imageio.get_writer(gif_name, mode='I') as writer:
-		#     for image in self.images:
-		#         writer.append_data(image, duration=0.01)
 		imageio.mimsave(gif_name, self.images, duration=0.01)
 		optimize(gif_name)
 
