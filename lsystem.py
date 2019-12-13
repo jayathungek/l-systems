@@ -110,7 +110,10 @@ class LSystem:
 
  
 
-
+if __name__ == "__main__":
+	settings = sys.argv[1]
+	lsg = LSystem(settings)
+	lsg.run()
 # def print_help():
 # 	msg= """lsystems help
 # -------------------------------------------
