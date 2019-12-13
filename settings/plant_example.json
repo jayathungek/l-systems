@@ -5,7 +5,7 @@
  			"out": "FF"},
 
  			{"in": "X", 
- 			"out": " F+[[X]-X]-F[-FX]+X"}
+ 			"out": "F+[[X]-X]-F[-FX]+X"}
  		  ],
  "length": 5,
  "iterations": 5,
