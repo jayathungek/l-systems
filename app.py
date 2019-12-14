@@ -76,8 +76,8 @@ def webhook():
                         msg = "generating test image"
                         send_message(sender_id, msg)
 
-                        create_image(TEST)
-
+                        filename = create_image(TEST)
+                        send_image(sender_id, filename)
                         break
                     else:
                         msg = greeting_text()
@@ -120,6 +120,30 @@ def send_message(recipient_id, message_text):
     #     log(r.status_code)
     #     log(r.text)
 
+def send_image(recipient_id, filepath):
+
+    # log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
+
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": "image/png"
+    }
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment":{
+                "type":"image/png",
+                "payload":{"is_reusable"=true}
+            }
+        },
+        "filedata": filepath
+    })
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+
 def is_at_beginning(word, string):
     if len(word) > len(string):
         return False
@@ -129,7 +153,8 @@ def is_at_beginning(word, string):
 def create_image(settings):
     lsg = LSystem(settings, cmd=False)
     image_name = lsg.run()
-    print("image created successfully at "+ image_name)
+    print("image created successfully at " + image_name)
+    return image_name
 
 def help_text():
     text = ('-LSystemsGifs Help-\n'
