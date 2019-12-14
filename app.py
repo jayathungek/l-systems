@@ -51,10 +51,17 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
 
-                    echo = "your message was:\n" + message_text
+                    msg = "" 
+                    if is_at_beginning("SETTINGS", message_text):
+                        msg = "You provided the following settings:\n" + message[oplen:] + "\n"
+                        msg += "Please wait while it is processed."
+                    elif is_at_beginning("HELP", message_text):
+                        msg = help_text()
+                    else:
+                        msg = greeting_text()
 
 
-                    send_message(sender_id, echo)
+                    send_message(sender_id, msg)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -90,6 +97,38 @@ def send_message(recipient_id, message_text):
     # if r.status_code != 200:
     #     log(r.status_code)
     #     log(r.text)
+
+def is_at_beginning(word, string):
+    if len(word) > len(string):
+        return False
+
+    return string[:len(word)] == word
+
+def help_text():
+    text = ('-LSystemsGifs Help-\n'
+            'To supply settings, start your message with "SETTINGS". '
+            'Then provide the following parameters, each on a new line:\n'
+            'type: Plant OR Dragon OR BTree OR Koch - How to interpret your L-System.\n\n'
+            'iterations: positive integer - Number of iterations to run your rules.\n\n'
+            'animate: true OR false - Decides whether to return an animated gif or a picture.\n\n'
+            'alphabet: string - Each character in this string is a symbol in the alphabet.\n\n'
+            'axiom: string - Starting point of the L-system. Must only be made up of '
+            'symbols from the previously defined alphabet.\n\n'
+            'rules: string > string | ... - String replacement rules that define your '
+            'L-System. Can have multiple rules, each separated by "|". '
+            'Each rule consists of two strings: The string to replace (left), and its replacement (right), '
+            'separated by ">".\n\n'
+            'Important:\n'
+            'ALL of these parameters must be present for SETTINGS to be processed correctly.\n'
+            'User-defined strings should not contain whitespace or the symbols ">" or "|".\n'
+            )
+    return text
+
+def greeting_text():
+    text = ('Hello! To interact with this bot, please provide some SETTINGS or type'
+            'HELP to see how to do so.'
+            )
+    return text
 
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support
