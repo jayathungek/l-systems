@@ -137,7 +137,7 @@ def send_image(recipient_id, filepath):
         "message": {
             "attachment":{
                 "type":"image/png",
-                "payload":{"is_reusable":true}
+                "payload":{"is_reusable":True}
             }
         },
         "filedata": filepath
