@@ -101,10 +101,15 @@ class DragonHandler:
 			frame_num+=1
 
 		self.pen.show()
+		filename = self.name
 		if self.animate:
 			self.gifmaker.save_gif(directory + self.name + GIF_EXT)
+			filename += GIF_EXT
 		else:
 			self.pen.save(directory + self.name + IMG_EXT)
+			filename += IMG_EXT
+			
+		return  directory + filename
 
 class KochHandler:
 	def __init__(self, settings):
@@ -143,8 +148,12 @@ class KochHandler:
 		self.pen.show()
 		if self.animate:
 			self.gifmaker.save_gif(directory + self.name + GIF_EXT)
+			filename += GIF_EXT
 		else:
 			self.pen.save(directory + self.name + IMG_EXT)
+			filename += IMG_EXT
+
+		return  directory + filename
 		
 
 class PlantHandler:
@@ -194,8 +203,12 @@ class PlantHandler:
 		self.pen.show()
 		if self.animate:
 			self.gifmaker.save_gif(directory + self.name + GIF_EXT)
+			filename += GIF_EXT
 		else:
 			self.pen.save(directory + self.name + IMG_EXT)
+			filename += IMG_EXT
+
+		return  directory + filename
 		
 
 
@@ -241,9 +254,14 @@ class BTreeHandler:
 			frame_num+=1
 
 		self.pen.show()
+		filename = self.name
 		if self.animate:
 			self.gifmaker.save_gif(directory + self.name + GIF_EXT)
+			filename += GIF_EXT
 		else:
 			self.pen.save(directory + self.name + IMG_EXT)
+			filename += IMG_EXT
+
+		return  directory + filename
 		
 

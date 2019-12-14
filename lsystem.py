@@ -43,7 +43,8 @@ class LSystem:
 
 	def out(self, lstrings, handler):
 		outfile = self.DEFAULT_IMG_DIR
-		handler.create_image(lstrings, outfile)
+		created_filename = handler.create_image(lstrings, outfile)
+		return created_filename
 
 	def get_settings_from_json_file(self, filename): 
 		print("using settings file: " + filename)
@@ -106,7 +107,8 @@ class LSystem:
 		
 		lsg = Generator(self.settings)
 		lstrings = lsg.generate()
-		self.out(lstrings, self.handler)
+		image = self.out(lstrings, self.handler)
+		return image
 
  
 

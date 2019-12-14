@@ -77,6 +77,7 @@ def webhook():
                         send_message(sender_id, msg)
 
                         create_image(TEST)
+
                         break
                     else:
                         msg = greeting_text()
@@ -127,8 +128,8 @@ def is_at_beginning(word, string):
 
 def create_image(settings):
     lsg = LSystem(settings, cmd=False)
-    lsg.run()
-    print("image created successfully")
+    image_name = lsg.run()
+    print("image created successfully at "+ image_name)
 
 def help_text():
     text = ('-LSystemsGifs Help-\n'
