@@ -3,6 +3,20 @@ from lsystem import LSystem
 import json, os, requests
 app = Flask(__name__)
 
+TEST = ('{"alphabet": "FXY-+",'
+        '"axiom": "FX+FX+",'
+        '"rules": ['
+                    '{"in": "X",'
+                    '"out": "X+YF"},'
+                    '{"in": "Y",'
+                    '"out": "FX-Y"}'
+                  '],'
+        '"iterations": 10,'
+        '"animate": false,'
+        '"angle": 90,'
+        '"length": 5,'
+        '"graphics_class": "DragonHandler"}')
+
 @app.route('/', methods=['GET'])
 def verify(): 
     # when the endpoint is registered as a webhook, it must echo back
@@ -35,6 +49,7 @@ def respond():
 
 @app.route('/', methods=['POST'])
 def webhook():
+    global TEST
 
     # endpoint for processing incoming messaging events
 
@@ -57,6 +72,12 @@ def webhook():
                         msg += "Please wait while it is processed."
                     elif is_at_beginning("HELP", message_text):
                         msg = help_text()
+                    elif is_at_beginning("TEST", message_text):
+                        msg = "generating test image"
+                        send_message(sender_id, msg)
+
+                        create_image(TEST)
+                        break
                     else:
                         msg = greeting_text()
 
@@ -104,6 +125,11 @@ def is_at_beginning(word, string):
 
     return string[:len(word)] == word
 
+def create_image(settings):
+    lsg = LSystem(settings, cmd=False)
+    lsg.run()
+    print("image created successfully")
+
 def help_text():
     text = ('-LSystemsGifs Help-\n'
             'To supply settings, start your message with "SETTINGS". '
@@ -125,8 +151,8 @@ def help_text():
     return text
 
 def greeting_text():
-    text = ('Hello! To interact with this bot, please provide some SETTINGS or type'
-            'HELP to see how to do so.'
+    text = ('Hello! To interact with this bot, please provide some settings or type '
+            '"HELP" to see how to do so.'
             )
     return text
 
