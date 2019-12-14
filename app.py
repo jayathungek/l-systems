@@ -143,7 +143,7 @@ def send_image(recipient_id, filepath):
         "filedata": filepath
     })
     r = requests.post("https://graph.facebook.com/v5.0/me/messages", params=params, headers=headers, data=data)
-    print(r)
+    print(r.text)
 
 def is_at_beginning(word, string):
     if len(word) > len(string):
