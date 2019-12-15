@@ -102,7 +102,29 @@ def send_message(recipient_id, message_text):
 
     # log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
 
-     
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "text": message_text
+        }
+    })
+    r = requests.post("https://graph.facebook.com/v5.0/me/messages", params=params, headers=headers, data=data)
+    # if r.status_code != 200:
+    #     log(r.status_code)
+    #     log(r.text)
+
+def send_image(recipient_id, filepath):
+
+    # log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
+
     data = { 
         'recipient': json.dumps({
             'id': recipient_id
@@ -126,33 +148,6 @@ def send_message(recipient_id, message_text):
         'Content-Type': multipart_data.content_type
     }
     r = requests.post("https://graph.facebook.com/v5.0/me/messages", params=params, headers=multipart_header, data=multipart_data)
-    # if r.status_code != 200:
-    #     log(r.status_code)
-    #     log(r.text)
-
-def send_image(recipient_id, filepath):
-
-    # log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
-
-    params = {
-        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
-    }
-    headers = {
-        "Content-Type": "application/json"
-    }
-    data = json.dumps({
-        "recipient": {
-            "id": recipient_id
-        },
-        "message": {
-            "attachment":{
-                "type":"image",
-                "payload":{"is_reusable":True}
-            }
-        },
-        "filedata": (filepath, open(filepath, 'rb'), 'image/png')
-    })
-    r = requests.post("https://graph.facebook.com/v5.0/me/messages", params=params, headers=headers, data=data)
     print(r.text)
 
 def is_at_beginning(word, string):
