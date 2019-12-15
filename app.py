@@ -135,7 +135,7 @@ def send_image(recipient_id, filepath):
                 'payload': {}
             }
         }),
-        'filedata': (filename, open(filename, 'rb'), 'image/png')
+        'filedata': (filepath, open(filepath, 'rb'), 'image/png')
     }
 
     params = {
