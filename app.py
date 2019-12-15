@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify 
+from requests_toolbelt import MultipartEncoder
 from lsystem import LSystem 
 import json, os, requests
 app = Flask(__name__)
@@ -101,21 +102,30 @@ def send_message(recipient_id, message_text):
 
     # log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
 
+     
+    data = { 
+        'recipient': json.dumps({
+            'id': recipient_id
+        }), 
+        'message': json.dumps({
+            'attachment': {
+                'type': 'image',
+                'payload': {}
+            }
+        }),
+        'filedata': (filename, open(filename, 'rb'), 'image/png')
+    }
+
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
-    headers = {
-        "Content-Type": "application/json"
+
+    multipart_data = MultipartEncoder(data)
+ 
+    multipart_header = {
+        'Content-Type': multipart_data.content_type
     }
-    data = json.dumps({
-        "recipient": {
-            "id": recipient_id
-        },
-        "message": {
-            "text": message_text
-        }
-    })
-    r = requests.post("https://graph.facebook.com/v5.0/me/messages", params=params, headers=headers, data=data)
+    r = requests.post("https://graph.facebook.com/v5.0/me/messages", params=params, headers=multipart_header, data=multipart_data)
     # if r.status_code != 200:
     #     log(r.status_code)
     #     log(r.text)
