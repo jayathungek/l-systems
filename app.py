@@ -128,7 +128,7 @@ def send_image(recipient_id, filepath):
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
     }
     headers = {
-        "Content-Type": "image/png"
+        "Content-Type": "application/json"
     }
     data = json.dumps({
         "recipient": {
@@ -138,8 +138,7 @@ def send_image(recipient_id, filepath):
             "attachment":{
                 "type":"image/png",
                 "payload":{"is_reusable":True}
-            },
-            "recipient": {"id": recipient_id}
+            }
         },
         "filedata": filepath
     })
