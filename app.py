@@ -140,7 +140,7 @@ def send_image(recipient_id, filepath):
                 "payload":{"is_reusable":True}
             }
         },
-        "filedata": filepath
+        "filedata": (filepath, open(filepath, 'rb'), 'image/png')
     })
     r = requests.post("https://graph.facebook.com/v5.0/me/messages", params=params, headers=headers, data=data)
     print(r.text)
