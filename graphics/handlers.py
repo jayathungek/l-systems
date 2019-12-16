@@ -79,7 +79,7 @@ class DragonHandler:
 
 		self.animate = settings["animate"]
 		self.gifmaker = GifMaker() if self.animate else None
-		self.gif_factor = 16
+		self.gif_factor = 32
 
 	def execute_command(self, command):
 		curr_heading = 	self.pen.get_heading()
