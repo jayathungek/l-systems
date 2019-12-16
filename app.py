@@ -77,7 +77,8 @@ def webhook():
                         msg = "generating test image"
                         send_message(sender_id, msg)
 
-                        filename = create_image(TEST)
+                        # filename = create_image(TEST)
+                        filename = "dragon.gif"
                         send_image(sender_id, filename)
                         break
                     else:
