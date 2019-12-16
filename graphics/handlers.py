@@ -122,7 +122,7 @@ class KochHandler:
 
 		self.animate = settings["animate"]
 		self.gifmaker = GifMaker() if self.animate else None
-		self.gif_factor = 8
+		self.gif_factor = 64
  
 
 
@@ -146,6 +146,7 @@ class KochHandler:
 			frame_num+=1
 
 		self.pen.show()
+		filename = self.name
 		if self.animate:
 			self.gifmaker.save_gif(directory + self.name + GIF_EXT)
 			filename += GIF_EXT
@@ -169,7 +170,7 @@ class PlantHandler:
 
 		self.animate = settings["animate"]
 		self.gifmaker = GifMaker() if self.animate else None
-		self.gif_factor = 8
+		self.gif_factor = 64
  
 
 
@@ -201,6 +202,7 @@ class PlantHandler:
 			frame_num+=1
 
 		self.pen.show()
+		filename = self.name
 		if self.animate:
 			self.gifmaker.save_gif(directory + self.name + GIF_EXT)
 			filename += GIF_EXT
@@ -225,7 +227,7 @@ class BTreeHandler:
 
 		self.animate = settings["animate"]
 		self.gifmaker = GifMaker() if self.animate else None
-		self.gif_factor = 8
+		self.gif_factor = 64
  
 
 	def execute_command(self, command):
