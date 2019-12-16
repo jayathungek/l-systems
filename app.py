@@ -13,7 +13,7 @@ TEST = ('{"alphabet": "FXY-+",'
                     '"out": "FX-Y"}'
                   '],'
         '"iterations": 10,'
-        '"animate": false,'
+        '"animate": true,'
         '"angle": 90,'
         '"length": 5,'
         '"graphics_class": "DragonHandler"}')
@@ -135,7 +135,7 @@ def send_image(recipient_id, filepath):
                 'payload': {}
             }
         }),
-        'filedata': (filepath, open(filepath, 'rb'), 'image/png')
+        'filedata': (filepath, open(filepath, 'rb'), 'image/gif')
     }
 
     params = {
