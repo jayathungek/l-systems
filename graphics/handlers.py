@@ -79,7 +79,7 @@ class DragonHandler:
 
 		self.animate = settings["animate"]
 		self.gifmaker = GifMaker() if self.animate else None
-		self.gif_factor = 8
+		self.gif_factor = 16
 
 	def execute_command(self, command):
 		curr_heading = 	self.pen.get_heading()
@@ -108,7 +108,7 @@ class DragonHandler:
 		else:
 			self.pen.save(directory + self.name + IMG_EXT)
 			filename += IMG_EXT
-			
+
 		return  directory + filename
 
 class KochHandler:
