@@ -7,7 +7,7 @@ from graphics.handlers import Util
 
 class LSystem:
 	def __init__(self, settings, cmd=True):
-		self.DEFAULT_IMG_DIR = "img/"
+		self.DEFAULT_IMG_DIR = "./"
 		self.REQUIRED_FIELDS = ["alphabet", "axiom", "rules", "iterations", "animate", "graphics_class"] 
 		self.settings = None 
 		self.handler = None
