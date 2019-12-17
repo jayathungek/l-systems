@@ -69,8 +69,14 @@ def webhook():
 
                     msg = "" 
                     if is_at_beginning("SETTINGS", message_text):
-                        msg = "You provided the following settings:\n" + message[oplen:] + "\n"
-                        msg += "Please wait while it is processed."
+                        oplen = len("SETTINGS")
+
+                        settings = parse_settings(message[oplen:])
+                        msg = "You provided the following settings:\n" + settings + "\n"
+                        send_message(sender_id, msg)
+                        # filename = create_image(settings)
+                        # send_image(sender_id, filename)
+                        break
                     elif is_at_beginning("HELP", message_text):
                         msg = help_text()
                     elif is_at_beginning("TEST", message_text):
@@ -97,6 +103,36 @@ def webhook():
                     pass
 
     return "ok", 200
+
+def parse_settings(settings):
+    lines = settings.split("\n")
+    settings = {}
+
+    for line in lines:
+        f_v = line.split(":")
+        field = f_v[0]
+        value = f_v[1]
+
+        if field == "type":
+            field = "graphics_class"
+            value += "Handler"
+
+        elif field == "rules":
+            rules = []
+            r = value.split("|")
+            for rule_msg in r:
+                in_out = rule_msg.split(">")
+                rule = {}
+                rule["in"] = in_out[0]                
+                rule["out"] = in_out[1]
+                rules.append(rule)
+            value = rules
+        settings[field] = value
+
+    return json.dumps(settings)
+
+
+
 
 
 def send_message(recipient_id, message_text):
@@ -179,7 +215,7 @@ def help_text():
             'separated by ">".\n\n'
             'Important:\n'
             'ALL of these parameters must be present for SETTINGS to be processed correctly.\n'
-            'User-defined strings should not contain whitespace or the symbols ">" or "|".\n'
+            'User-defined strings should not contain whitespace or the symbols ":", ">" or "|".\n'
             )
     return text
 
