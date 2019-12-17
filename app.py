@@ -72,6 +72,7 @@ def webhook():
                         oplen = len("SETTINGS")
 
                         settings = parse_settings(message_text[oplen:])
+                        print(message_text[oplen:])
                         msg = "You provided the following settings:\n" + settings + "\n"
                         send_message(sender_id, msg)
                         # filename = create_image(settings)
