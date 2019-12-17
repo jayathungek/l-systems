@@ -68,8 +68,8 @@ def webhook():
                     message_text = messaging_event["message"]["text"]  # the message's text
 
                     msg = "" 
-                    if is_at_beginning("SETTINGS", message_text):
-                        oplen = len("SETTINGS")
+                    if is_at_beginning("SETTINGS\n", message_text):
+                        oplen = len("SETTINGS\n")
 
                         print(message_text[oplen:])
                         settings = parse_settings(message_text[oplen:])
