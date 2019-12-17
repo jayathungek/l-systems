@@ -21,3 +21,7 @@ class SymbolNotInAlphabetError(Error):
 class NegativeFieldError(Error):
 	def __init__(self, field, number):
 		self.message = "Invalid number for field {} : {}. Number cannot be negative".format(field, number)
+
+class MalformedSettingsError(Error):
+	def __init__(self, line_num):
+		self.message = "Bad formatting on line {} of settings.".format(line_num)
