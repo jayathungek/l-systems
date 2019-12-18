@@ -149,6 +149,8 @@ def parse_settings(settings):
         settings["angle"] = 90
         settings["length"] = 5
 
+    settings["animate"] =False
+
     return json.dumps(settings)
 
 
