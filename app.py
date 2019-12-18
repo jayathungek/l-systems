@@ -145,7 +145,7 @@ def parse_settings(settings):
         settings["angle"] = 45
         settings["length"] = 10
 
-    else settings["graphics_class"] == "KochHandler":
+    elif settings["graphics_class"] == "KochHandler":
         settings["angle"] = 90
         settings["length"] = 5
 
