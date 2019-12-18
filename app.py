@@ -4,19 +4,19 @@ from lsystem import LSystem
 import json, os, requests
 app = Flask(__name__)
 
-TEST = ('{"alphabet": "FXY-+",'
-        '"axiom": "FX+FX+",'
+TEST = ('{"alphabet": "XF-+[]",'
+        '"axiom": "X",'
         '"rules": ['
+                    '{"in": "F",'
+                    '"out": "FF"},'
                     '{"in": "X",'
-                    '"out": "X+YF"},'
-                    '{"in": "Y",'
-                    '"out": "FX-Y"}'
+                    '"out": "F+[[X]-X]-F[-FX]+X"}'
                   '],'
-        '"iterations": 10,'
+        '"iterations": 5,'
         '"animate": true,'
-        '"angle": 90,'
+        '"angle": 25,'
         '"length": 5,'
-        '"graphics_class": "DragonHandler"}')
+        '"graphics_class": "PlantHandler"}')
 
 @app.route('/', methods=['GET'])
 def verify(): 
@@ -75,7 +75,7 @@ def webhook():
                         settings = parse_settings(message_text[oplen:])
                         msg = "You provided the following settings:\n" + settings + "\n"
                         send_message(sender_id, msg)
-                        filename = create_image(settings)
+                        filename = create_image(TEST)
                         send_image(sender_id, filename)
                         break
                     elif is_at_beginning("HELP", message_text):
@@ -148,8 +148,7 @@ def parse_settings(settings):
     elif settings["graphics_class"] == "KochHandler":
         settings["angle"] = 90
         settings["length"] = 5
-
-    settings["animate"] =False
+ 
 
     return json.dumps(settings)
 
