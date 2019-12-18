@@ -75,8 +75,8 @@ def webhook():
                         settings = parse_settings(message_text[oplen:])
                         msg = "You provided the following settings:\n" + settings + "\n"
                         send_message(sender_id, msg)
-                        # filename = create_image(settings)
-                        # send_image(sender_id, filename)
+                        filename = create_image(settings)
+                        send_image(sender_id, filename)
                         break
                     elif is_at_beginning("HELP", message_text):
                         msg = help_text()
@@ -128,7 +128,26 @@ def parse_settings(settings):
                 rule["out"] = in_out[1]
                 rules.append(rule)
             value = rules
+        elif field == "iterations":
+            value = int(value)
+
         settings[field] = value
+
+    if settings["graphics_class"] == "DragonHandler":
+        settings["angle"] = 90
+        settings["length"] = 5
+
+    elif settings["graphics_class"] == "PlantHandler":
+        settings["angle"] = 25
+        settings["length"] = 5
+
+    elif settings["graphics_class"] == "BTreeHandler":
+        settings["angle"] = 45
+        settings["length"] = 10
+
+    else settings["graphics_class"] == "KochHandler":
+        settings["angle"] = 90
+        settings["length"] = 5
 
     return json.dumps(settings)
 
