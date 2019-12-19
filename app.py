@@ -75,7 +75,7 @@ def webhook():
                         settings = parse_settings(message_text[oplen:])
                         msg = "You provided the following settings:\n" + settings + "\n"
                         send_message(sender_id, msg)
-                        filename = create_image(TEST)
+                        filename = create_image(settings)
                         send_image(sender_id, filename)
                         break
                     elif is_at_beginning("HELP", message_text):
