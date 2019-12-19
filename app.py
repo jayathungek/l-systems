@@ -130,6 +130,9 @@ def parse_settings(settings):
             value = rules
         elif field == "iterations":
             value = int(value)
+        elif field == "animate":
+            value = bool(value)
+
 
         settings[field] = value
 
