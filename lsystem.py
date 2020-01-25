@@ -2,7 +2,7 @@ from generator import Generator
 import json
 import sys 
 import error
-import graphics.handlers as gh 
+import handlers as gh 
 
 class LSystem:
 	def __init__(self, settings, cmd=True):
@@ -19,6 +19,14 @@ class LSystem:
 		self.import_handler(self.settings["graphics_class"])
 
 
+	def import_handler(self, graphics_class): 
+		try:
+			handler = getattr(gh, graphics_class)
+			self.handler = handler(self.settings)
+		except AttributeError as e:
+			print(e)
+			print("Graphics handler {} does not exist. Select one that does.".format(graphics_class))
+			return
 
 	@staticmethod
 	def get_missing_fields(original, test):
@@ -69,13 +77,6 @@ class LSystem:
 			print ("Bad JSON format, fix errors in JSON file.")
 			return
 
-	def import_handler(self, graphics_class): 
-		try:
-			handler = getattr(gh, graphics_class)
-			self.handler = handler(self.settings)
-		except AttributeError as e:
-			print("Graphics handler {} does not exist. Select one that does.".format(graphics_class))
-			return
 
 
 	def validate_input(self):

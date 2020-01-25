@@ -14,4 +14,6 @@
  "angle_leeway": 5,
  "w_factor": 0.75,
  "w0": 15,
+ "start_colour": "blue",
+ "end_colour": "pink",
  "graphics_class": "PlantHandler"}

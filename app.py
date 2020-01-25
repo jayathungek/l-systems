@@ -2,6 +2,9 @@ from flask import Flask, request, jsonify
 from requests_toolbelt import MultipartEncoder
 from lsystem import LSystem 
 import json, os, requests
+
+import params
+
 app = Flask(__name__)
 
 TEST = ('{"alphabet": "XF-+[]",'
@@ -132,7 +135,9 @@ def parse_settings(settings):
             value = int(value)
         elif field == "animate":
             value = bool(int(value))
-
+        elif field == "start" or field == "end":
+            field += "_colour"
+            value = params.COLOURS[value]
 
         settings[field] = value
 

@@ -1,4 +1,4 @@
-from graphics.util import Util
+from util import Util
 
 class Generator:
 	def __init__(self, settings, old=False):
