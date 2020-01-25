@@ -2,8 +2,7 @@ from generator import Generator
 import json
 import sys 
 import error
-import graphics.handlers as gh
-from graphics.handlers import Util
+import graphics.handlers as gh 
 
 class LSystem:
 	def __init__(self, settings, cmd=True):
@@ -18,6 +17,8 @@ class LSystem:
 			self.get_settings_from_json(settings)
 
 		self.import_handler(self.settings["graphics_class"])
+
+
 
 	@staticmethod
 	def get_missing_fields(original, test):
@@ -105,7 +106,7 @@ class LSystem:
 			print (e.message)
 			return
 		
-		lsg = Generator(self.settings)
+		lsg = Generator(self.settings, old=True)
 		lstrings = lsg.generate()
 		image = self.out(lstrings, self.handler)
 		return image
@@ -116,6 +117,27 @@ if __name__ == "__main__":
 	settings = sys.argv[1]
 	lsg = LSystem(settings)
 	lsg.run()
+
+	# s = "!(w)F(s)+(a)[[X]-(a)X]-(a)F(s)[-(a)F(s)X]+(a)X"
+	# s = LSystem.replace_char(s, "a", str(25))
+	# s = LSystem.replace_char(s, "w", str(30))
+	# s = LSystem.replace_char(s, "s", str(5))
+	# print(s)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # def print_help():
 # 	msg= """lsystems help
 # -------------------------------------------

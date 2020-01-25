@@ -143,6 +143,9 @@ def parse_settings(settings):
     elif settings["graphics_class"] == "PlantHandler":
         settings["angle"] = 25
         settings["length"] = 5
+        settings["angle_leeway"] = 5
+        settings["w0"] = 15
+        settings["w_factor"] = 15
 
     elif settings["graphics_class"] == "BTreeHandler":
         settings["angle"] = 45
