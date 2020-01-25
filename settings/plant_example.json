@@ -11,4 +11,7 @@
  "iterations": 5,
  "angle": 25,
  "animate": true,
+ "angle_leeway": 5,
+ "w_factor": 0.75,
+ "w0": 15,
  "graphics_class": "PlantHandler"}
