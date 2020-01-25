@@ -2,13 +2,14 @@ from PIL import Image, ImageDraw
 import math
 
 class Pen:
-	def __init__(self, image_dimensions, pen_pos=(0, 0)):
+	def __init__(self, image_dimensions, thickness, pen_pos=(0, 0)):
 		self.pos = pen_pos
 		self.heading = 0
 		self.is_down = False
 		self.bg = "#4C4C4C"
 		self.colour = "#EC99B2"
 		self.canvas_size = image_dimensions
+		self.thickness = thickness
 
 		self.image = Image.new('RGBA', self.canvas_size, self.bg)
 		self.drawing = ImageDraw.Draw(self.image)
@@ -16,7 +17,7 @@ class Pen:
 	def forward(self, dist):
 		newpos = ((dist * math.cos(self.heading)) + self.pos[0], (dist * math.sin(self.heading)) + self.pos[1])
 		if self.is_down:
-			self.drawing.line(self.pos + newpos, fill=self.colour)
+			self.drawing.line(self.pos + newpos, fill=self.colour, width=int(self.thickness))
 		self.pos = newpos
 
 	def left(self, heading):
@@ -47,11 +48,18 @@ class Pen:
 		degrees = (self.heading * 180)/math.pi
 		return degrees
 
+	def set_thickness(self, new_thickness):
+		self.thickness = new_thickness
+
+	def get_thickness(self):
+		return self.thickness
+
 	def set_colour(self, new_colour):
 		self.colour = new_colour
 
 	def set_bg(self, new_bg):
 		self.bg = new_bg
+
 
 	def set_canvas_size(self, size):
 		self.canvas_size = size
