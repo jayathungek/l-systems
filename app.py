@@ -145,7 +145,7 @@ def parse_settings(settings):
         settings["length"] = 5
         settings["angle_leeway"] = 5
         settings["w0"] = 15
-        settings["w_factor"] = 15
+        settings["w_factor"] = 0.75
 
     elif settings["graphics_class"] == "BTreeHandler":
         settings["angle"] = 45
