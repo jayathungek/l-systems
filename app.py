@@ -138,10 +138,10 @@ def parse_settings(settings):
             field = f_v[0].lower()
             value = f_v[1].lower()
 
-            try:
-                default_settings[field]
-            except KeyError:
-                raise error.ParameterDoesNotExistError(field)
+            # try:
+            #     default_settings[field]
+            # except KeyError:
+            #     raise error.ParameterDoesNotExistError(field)
 
             if field == "iterations":
                 if Util.isInteger(value):
