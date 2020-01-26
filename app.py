@@ -76,15 +76,20 @@ def webhook():
                         oplen = len("SETTINGS\n")
 
                         print(message_text[oplen:])
-                        settings = parse_settings(message_text[oplen:])
-                        msg = "You provided the following settings:\n" + settings + "\n"
-                        send_message(sender_id, msg)
-                        image = create_image(settings)
-                        if image["status"] == "OK":
-                            send_image(sender_id, image["image_name"])
-                        else:
-                            send_message(sender_id, "Sorry, please try again")
-                        break
+                        try:
+                            settings = parse_settings(message_text[oplen:])
+                            msg = "You provided the following settings:\n" + settings + "\n"
+                            send_message(sender_id, msg)
+                            image = create_image(settings)
+                            if image["status"] == "OK":
+                                send_image(sender_id, image["image_name"])
+                            else:
+                                send_message(sender_id, "Sorry, please try again")
+                            break
+
+                        except error.MalformedSettingsError as e:
+                            send_message(sender_id, "Error:" + e.message)
+
                     elif is_at_beginning("HELP", message_text):
                         msg = help_text()
                     elif is_at_beginning("TEST", message_text):
