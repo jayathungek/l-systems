@@ -146,10 +146,12 @@ def parse_settings(settings):
             #     value = rules
             # elif field == "animate":
             #     value = bool(int(value))
-            elif field == "iterations":
+            if field == "iterations":
                 value = int(value)
             elif field == "start" or field == "end" or field == "leaf" or field == "fruit":
-                field += "_colour" 
+                field += "_colour"
+            elif field == "scale":
+                field = "length"
 
             base_settings[field] = value
         else:
