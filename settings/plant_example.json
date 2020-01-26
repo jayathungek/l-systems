@@ -1,11 +1,11 @@
-{"alphabet": "XF-+[]",
+{"alphabet": "XFOL-+[]",
  "axiom": "X",
  "rules": [
  			{"in": "F", 
  			"out": "FF"},
 
  			{"in": "X", 
- 			"out": "F+[[X]-X]-F[-FX]+X"}
+ 			"out": "F+[[XL]O-XL]O-F[-FXL]O+X"}
  		  ],
  "length": 5,
  "iterations": 5,
@@ -14,6 +14,10 @@
  "angle_leeway": 5,
  "w_factor": 0.75,
  "w0": 15,
+ "fruit_density": 0.03,
+ "leaf_density": 0.4,
+ "leaf_colour": "red",
+ "fruit_colour": "yellow",
  "start_colour": "blue",
  "end_colour": "pink",
  "graphics_class": "PlantHandler"}
