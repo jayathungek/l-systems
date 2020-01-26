@@ -25,3 +25,11 @@ class NegativeFieldError(Error):
 class MalformedSettingsError(Error):
 	def __init__(self, line_num):
 		self.message = "Bad formatting on line {} of settings.".format(line_num)
+
+class ParameterError(Error):
+	def __init__(self, parameter, passed_value, rule):
+		self.message = "Bad argument for {}: {}. {}".format(parameter, passed_value, rule)
+
+class ParameterDoesNotExistError(Error):
+	def __init__(self, parameter):
+		self.message = "Parameter {} deos not exist".format(parameter)
