@@ -120,7 +120,22 @@ class Util:
 		except json.decoder.JSONDecodeError as e:
 			print ("Bad JSON format, fix errors in JSON file.")
 			return
- 
+
+ @staticmethod
+	def isNumeric(string): 
+		try:
+			float(string)
+			return True
+		except ValueError:
+			return False
+
+ @staticmethod
+	def isInteger(string): 
+		try:
+			int(string)
+			return True
+		except ValueError:
+			return False
 
 
 if __name__ == "__main__":
