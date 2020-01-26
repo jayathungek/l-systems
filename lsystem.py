@@ -124,8 +124,7 @@ class LSystem:
 		colours = list(params.COLOURS.keys())
 
 		self.settings["iterations"] = Util.random_selection([4, 5])
-		self.settings["angle"] = Util.add_noise(self.settings["angle"], 10)
-		self.settings["w_factor"] = Util.random_selection([0.7, 0.75, 0.8, 0.85])
+		self.settings["angle"] = Util.add_noise(self.settings["angle"], 10) 
 		self.settings["w0"] = Util.random_selection([10, 15, 20, 25])
 
 		leaf_d = Util.get_random()
