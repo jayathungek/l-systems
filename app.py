@@ -152,7 +152,7 @@ def parse_settings(settings):
                 field += "_colour"
             elif field == "scale":
                 field = "length"
-                value = int(value)
+                value = float(value)
 
             base_settings[field] = value
         else:
