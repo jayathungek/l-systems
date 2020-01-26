@@ -135,8 +135,8 @@ def parse_settings(settings):
     for i, line in enumerate(lines):
         f_v = line.split(":")
         if len(f_v) == 2:
-            field = lower(f_v[0])
-            value = lower(f_v[1])
+            field = f_v[0].lower()
+            value = f_v[1].lower()
 
             try:
                 default_settings[field]
