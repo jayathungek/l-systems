@@ -22,6 +22,54 @@ class Pen:
 			self.drawing.line(self.pos + newpos, fill=self.colour, width=int(self.thickness))
 		self.pos = newpos
 
+	def draw_fruit(self, r, colour, pos=None):
+		if pos is None:
+			pos = self.pos
+
+		newpos = (pos[0], pos[1] + 20)
+		self.drawing.line(pos + newpos, fill=self.colour, width=int(self.thickness))
+		
+		x = (newpos[0] - r, newpos[1] - r)
+		y = (newpos[0] + r, newpos[1] + r)
+		self.drawing.ellipse([x, y], fill=colour)
+
+	def draw_leaf(self, side, angle, colour, pos=None):
+		cur_pos = self.pos
+		cur_heading = self.heading
+		leaf_int_angle = 30
+		polygon = []
+		if pos is None:
+			pos = self.pos
+		
+
+		self.set_heading(angle)
+		self.forward(side)
+		polygon.append(self.pos)
+		self.up()
+
+		self.left(leaf_int_angle)
+		self.forward(side)
+		polygon.append(self.pos)
+
+		self.right(2 * leaf_int_angle)
+		self.forward(side)
+		polygon.append(self.pos)
+
+		self.right(4 * leaf_int_angle)
+		self.forward(side)
+		polygon.append(self.pos) 
+
+		self.set_pos(cur_pos)
+		self.set_heading(cur_heading)
+
+		self.down()
+
+		self.drawing.polygon(polygon, fill=colour)
+
+
+
+
+
 	def left(self, heading):
 		radians = (heading * math.pi)/180.0
 		self.heading -= radians

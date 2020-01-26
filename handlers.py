@@ -130,6 +130,11 @@ class PlantHandler:
 		self.gif_factor = 64
 		self.start_colour = params.COLOURS[settings["start_colour"]]
 		self.end_colour = params.COLOURS[settings["end_colour"]]
+		self.fruit_colour = params.COLOURS[settings["fruit_colour"]]
+		self.leaf_colour = params.COLOURS[settings["leaf_colour"]]
+		self.fruit_radius = settings["length"]
+		self.fruit_density = settings["fruit_density"]
+		self.leaf_density = settings["leaf_density"]
 
 	def get_colour_from_thickness(self, thickness):
 		base_thickness = self.settings["w0"]
@@ -150,6 +155,16 @@ class PlantHandler:
 			angle = Util.add_noise(self.settings["angle"], self.settings["angle_leeway"])
 			angle *= Util.get_sign(0.9)
 			self.pen.left(angle)
+		elif command == "O":
+			to_draw = Util.get_sign(self.fruit_density)
+			if to_draw == -1:
+				self.pen.draw_fruit(self.fruit_radius, self.fruit_colour)
+		elif command == "L":
+			to_draw = Util.get_sign(self.leaf_density)
+			if to_draw == -1:
+				pen_heading = self.pen.get_heading()
+				angle = Util.add_noise(pen_heading, 45)
+				self.pen.draw_leaf(10, angle, self.leaf_colour)
 		elif command == "[":
 			self.pen.set_thickness(self.pen.thickness * self.settings["w_factor"])
 			self.stack.append({"pos": self.pen.get_pos(), 
