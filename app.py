@@ -78,8 +78,11 @@ def webhook():
                         settings = parse_settings(message_text[oplen:])
                         msg = "You provided the following settings:\n" + settings + "\n"
                         send_message(sender_id, msg)
-                        filename = create_image(settings)
-                        send_image(sender_id, filename)
+                        image = create_image(settings)
+                        if image["status"] == "OK":
+                            send_image(sender_id, image["image_name"])
+                        else:
+                            send_message("Sorry, please try again")
                         break
                     elif is_at_beginning("HELP", message_text):
                         msg = help_text()
@@ -227,10 +230,14 @@ def is_at_beginning(word, string):
     return string[:len(word)] == word
 
 def create_image(settings):
-    lsg = LSystem(settings, cmd=False)
-    image_name = lsg.run()
-    print("image created successfully at " + image_name)
-    return image_name
+    try:
+        lsg = LSystem(settings, cmd=False)
+        image_name = lsg.run()
+        print("image created successfully at " + image_name)
+        return {"status": "OK", "image_name": image_name}
+    except:
+        return{"status": "error"}
+
 
 def help_text():
     text = ('-LSystemsGifs Help-\n'
