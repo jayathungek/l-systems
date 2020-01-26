@@ -150,6 +150,8 @@ def parse_settings(settings):
         settings["angle_leeway"] = 5
         settings["w0"] = 15
         settings["w_factor"] = 0.75
+        settings["fruit_density"] = 0.03
+        settings["leaf_density"] = 0.4
 
     elif settings["graphics_class"] == "BTreeHandler":
         settings["angle"] = 45
