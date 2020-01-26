@@ -122,20 +122,20 @@ class Util:
 			return
 
 	@staticmethod
-		def isNumeric(string): 
-			try:
-				float(string)
-				return True
-			except ValueError:
-				return False
+	def isNumeric(string): 
+		try:
+			float(string)
+			return True
+		except ValueError:
+			return False
 
 	@staticmethod
-		def isInteger(string): 
-			try:
-				int(string)
-				return True
-			except ValueError:
-				return False
+	def isInteger(string): 
+		try:
+			int(string)
+			return True
+		except ValueError:
+			return False
 
 
 if __name__ == "__main__":
