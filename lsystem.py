@@ -50,6 +50,7 @@ class LSystem:
 			if symbol not in alphabet:
 				raise error.SymbolNotInAlphabetError(symbol, alphabet)
 
+
 	def out(self, lstrings, handler):
 		outfile = self.DEFAULT_IMG_DIR
 		created_filename = handler.create_image(lstrings, outfile)

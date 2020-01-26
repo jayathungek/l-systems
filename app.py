@@ -25,6 +25,7 @@ TEST = ('{"alphabet": "XF-+[]",'
 
 PLANT_BASE = "./settings/plant_example.json"
 
+
 @app.route('/', methods=['GET'])
 def verify(): 
     # when the endpoint is registered as a webhook, it must echo back
@@ -128,6 +129,18 @@ def webhook():
 
     return "ok", 200
 
+def field_exists(field, settings):
+    if field == "scale":
+        field = "length"
+    elif field == "fruit" or field == "leaf" or field == "start" or field == "end":
+        field += "_colour"
+
+    try:
+        settings[field]
+        return True
+    except KeyError:
+        return False
+
 def parse_settings(settings):
     lines = settings.split("\n")
     default_settings = Util.get_settings_from_json_file(PLANT_BASE)
@@ -138,10 +151,9 @@ def parse_settings(settings):
             field = f_v[0].lower()
             value = f_v[1].lower()
 
-            # try:
-            #     default_settings[field]
-            # except KeyError:
-            #     raise error.ParameterDoesNotExistError(field)
+            if not field_exists(field, default_settings):
+                raise error.ParameterDoesNotExistError(field)
+
 
             if field == "iterations":
                 if Util.isInteger(value):
@@ -256,6 +268,7 @@ def create_image(settings):
         return {"status": "OK", "image_name": image_name}
     except:
         return{"status": "error"}
+
 
 
 def help_text():
