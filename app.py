@@ -135,7 +135,7 @@ def parse_settings(settings):
             value = int(value)
         elif field == "animate":
             value = bool(int(value))
-        elif field == "start" or field == "end":
+        elif field == "start" or field == "end" or field == "leaf" or field == "fruit":
             field += "_colour" 
 
         settings[field] = value
