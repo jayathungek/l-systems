@@ -94,6 +94,30 @@ class Util:
 	    vector = c2-c1
 	    c_new = c1 + vector * percent
 	    return Util.rgb_to_hex((int(c_new[0]), int(c_new[1]), int(c_new[2])))
+
+	@staticmethod
+	def get_settings_from_json_file(filename): 
+		print("using settings file: " + filename)
+		try:
+			with open(filename, 'r') as f:
+			    return json.load(f) 
+
+		except json.decoder.JSONDecodeError as e:
+			print ("Bad JSON format, fix errors in JSON file.")
+			return
+		except FileNotFoundError as e:
+			print("File {} does not exist. Check file path for typos.".format(filename))
+			return
+
+	@staticmethod
+	def get_settings_from_json(string): 
+		print("using settings string: " + string)
+		try:
+			return json.loads(string) 
+
+		except json.decoder.JSONDecodeError as e:
+			print ("Bad JSON format, fix errors in JSON file.")
+			return
  
 
 
