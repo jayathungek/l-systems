@@ -82,7 +82,7 @@ def webhook():
                         if image["status"] == "OK":
                             send_image(sender_id, image["image_name"])
                         else:
-                            send_message("Sorry, please try again")
+                            send_message(sender_id, "Sorry, please try again")
                         break
                     elif is_at_beginning("HELP", message_text):
                         msg = help_text()
