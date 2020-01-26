@@ -94,6 +94,7 @@ class Util:
 	    vector = c2-c1
 	    c_new = c1 + vector * percent
 	    return Util.rgb_to_hex((int(c_new[0]), int(c_new[1]), int(c_new[2])))
+ 
 
 
 if __name__ == "__main__":
