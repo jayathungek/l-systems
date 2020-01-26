@@ -273,11 +273,12 @@ def is_at_beginning(word, string):
 
 def create_image(settings, random=False):
     try:
-        lsg = LSystem(settings, random=random, cmd=False)
+        lsg = LSystem(settings, random, cmd=False)
         image_name = lsg.run()
         print("image created successfully at " + image_name)
         return {"status": "OK", "image_name": image_name}
-    except:
+    except Exception as e:
+        print(e.message)
         return{"status": "error"}
 
 
