@@ -279,7 +279,7 @@ def create_image(settings, random=False):
         print("image created successfully at " + image_name)
         return {"status": "OK", "image_name": image_name}
     except Exception as e:
-        print(e.message)
+        print(e)
         return{"status": "error"}
 
 
