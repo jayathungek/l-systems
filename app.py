@@ -93,14 +93,22 @@ def webhook():
                         except error.MalformedSettingsError as e:
                             send_message(sender_id, "Error:" + e.message)
 
+                        except error.NegativeFieldError as e:
+                            send_message(sender_id, "Error:" + e.message)
+
+                        except error.ParameterError as e:
+                            send_message(sender_id, "Error:" + e.message)
+
+                        except error.ParameterDoesNotExistError as e:
+                            send_message(sender_id, "Error:" + e.message)
+
                     elif is_at_beginning("HELP", message_text):
                         msg = help_text()
                     elif is_at_beginning("TEST", message_text):
                         msg = "generating test image"
                         send_message(sender_id, msg)
 
-                        filename = create_image(TEST)
-                        # filename = "plant.gif"
+                        filename = create_image(TEST) 
                         send_image(sender_id, filename)
                         break
                     else:
@@ -122,66 +130,61 @@ def webhook():
 
 def parse_settings(settings):
     lines = settings.split("\n")
-    base_settings = Util.get_settings_from_json_file(PLANT_BASE)
+    default_settings = Util.get_settings_from_json_file(PLANT_BASE)
 
     for i, line in enumerate(lines):
         f_v = line.split(":")
         if len(f_v) == 2:
-            field = f_v[0]
-            value = f_v[1]
+            field = lower(f_v[0])
+            value = lower(f_v[1])
 
-            # if field == "type":
-            #     field = "graphics_class"
-            #     value += "Handler"
+            try:
+                default_settings[field]
+            except KeyError:
+                raise error.ParameterDoesNotExistError(field)
 
-            # elif field == "rules":
-            #     rules = []
-            #     r = value.split("|")
-            #     for rule_msg in r:
-            #         in_out = rule_msg.split(">")
-            #         rule = {}
-            #         rule["in"] = in_out[0]                
-            #         rule["out"] = in_out[1]
-            #         rules.append(rule)
-            #     value = rules
-            # elif field == "animate":
-            #     value = bool(int(value))
             if field == "iterations":
-                value = int(value)
-            elif field == "start" or field == "end" or field == "leaf" or field == "fruit":
-                field += "_colour"
+                if Util.isInteger(value):
+                    value = int(value)
+                    if value < 0:
+                        raise error.NegativeFieldError(field, value)
+
+                    if value > 5:
+                        raise error.ParameterError(field, value, "Argument must be between 0 and 5.")    
+                else:
+                    raise error.ParameterError(field, value, "Argument must be an integer.")
+
             elif field == "scale":
-                field = "length"
-                value = float(value)
+                if Util.isNumeric(value):
+                    field = "length"
+                    value = float(value)
+                    if value < 0:
+                        raise error.NegativeFieldError(field, value)
+                else:
+                    raise error.ParameterError(field, value, "Scale must be an number.")                    
+            
+            elif field == "start" or field == "end" or field == "leaf" or field == "fruit":
+                try:
+                    params.COLOURS[value]
+                    field += "_colour"
+                except KeyError:
+                    raise error.ParameterError(field, value, "This colour does not exist.")
 
-            base_settings[field] = value
+            elif field == "leaf_density" or field == "fruit_density":
+                if Util.isNumeric(value):
+                    value = float(value)
+                    if value < 0 or value > 1:
+                        raise error.ParameterError(field, value, "Density must be between 0 and 1.")    
+                else:
+                    raise error.ParameterError(field, value, "Density must be a number.")
+
+
+            
+            default_settings[field] = value
         else:
-            raise error.MalformedSettingsError(i)
+            raise error.MalformedSettingsError(i) 
 
-
-    # if settings["graphics_class"] == "DragonHandler":
-    #     settings["angle"] = 90
-    #     settings["length"] = 5
-
-    # elif settings["graphics_class"] == "PlantHandler":
-    #     settings["angle"] = 25
-    #     settings["length"] = 5
-    #     settings["angle_leeway"] = 5
-    #     settings["w0"] = 15
-    #     settings["w_factor"] = 0.75
-    #     settings["fruit_density"] = 0.03
-    #     settings["leaf_density"] = 0.4
-
-    # elif settings["graphics_class"] == "BTreeHandler":
-    #     settings["angle"] = 45
-    #     settings["length"] = 10
-
-    # elif settings["graphics_class"] == "KochHandler":
-    #     settings["angle"] = 90
-    #     settings["length"] = 5
- 
-
-    return json.dumps(base_settings)
+    return json.dumps(default_settings)
 
 
 
@@ -252,7 +255,7 @@ def create_image(settings):
         print("image created successfully at " + image_name)
         return {"status": "OK", "image_name": image_name}
     except:
-        return{"status": "error"}
+        return{"status": "error", "message"}
 
 
 def help_text():
