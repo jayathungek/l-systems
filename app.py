@@ -4,6 +4,7 @@ from lsystem import LSystem
 import json, os, requests
 
 import params
+import error
 
 app = Flask(__name__)
 
@@ -115,33 +116,37 @@ def parse_settings(settings):
     lines = settings.split("\n")
     settings = {}
 
-    for line in lines:
+    for i, line in enumerate(lines):
         f_v = line.split(":")
-        field = f_v[0]
-        value = f_v[1]
+        if len(f_v) == 2:
+            field = f_v[0]
+            value = f_v[1]
 
-        if field == "type":
-            field = "graphics_class"
-            value += "Handler"
+            if field == "type":
+                field = "graphics_class"
+                value += "Handler"
 
-        elif field == "rules":
-            rules = []
-            r = value.split("|")
-            for rule_msg in r:
-                in_out = rule_msg.split(">")
-                rule = {}
-                rule["in"] = in_out[0]                
-                rule["out"] = in_out[1]
-                rules.append(rule)
-            value = rules
-        elif field == "iterations":
-            value = int(value)
-        elif field == "animate":
-            value = bool(int(value))
-        elif field == "start" or field == "end" or field == "leaf" or field == "fruit":
-            field += "_colour" 
+            elif field == "rules":
+                rules = []
+                r = value.split("|")
+                for rule_msg in r:
+                    in_out = rule_msg.split(">")
+                    rule = {}
+                    rule["in"] = in_out[0]                
+                    rule["out"] = in_out[1]
+                    rules.append(rule)
+                value = rules
+            elif field == "iterations":
+                value = int(value)
+            elif field == "animate":
+                value = bool(int(value))
+            elif field == "start" or field == "end" or field == "leaf" or field == "fruit":
+                field += "_colour" 
 
-        settings[field] = value
+            settings[field] = value
+        else:
+            raise error.MalformedSettingsError(i)
+
 
     if settings["graphics_class"] == "DragonHandler":
         settings["angle"] = 90
