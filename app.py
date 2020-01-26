@@ -255,7 +255,7 @@ def create_image(settings):
         print("image created successfully at " + image_name)
         return {"status": "OK", "image_name": image_name}
     except:
-        return{"status": "error", "message"}
+        return{"status": "error"}
 
 
 def help_text():
