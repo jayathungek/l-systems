@@ -88,6 +88,9 @@ class Util:
 	@staticmethod
 	def lerp_colour(c1, c2, percent):
 	    '''assumes color is rgb between (0, 0, 0) and (255, 255, 255)'''
+	    if c1 == c2:
+	    	return c1
+	    
 	    c1 = Util.hex_to_rgb(c1)
 	    c2 = Util.hex_to_rgb(c2)
 
@@ -136,6 +139,17 @@ class Util:
 			return True
 		except ValueError:
 			return False
+
+	@staticmethod
+	def random_selection(l, exclude=[]):
+		s = random.choice(l)
+		while s in exclude:
+			s = random.choice(l)
+		return s
+
+	@staticmethod
+	def get_random():
+		return random.random()
 
 
 if __name__ == "__main__":
