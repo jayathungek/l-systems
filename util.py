@@ -121,7 +121,7 @@ class Util:
 			print ("Bad JSON format, fix errors in JSON file.")
 			return
 
-	 @staticmethod
+	@staticmethod
 		def isNumeric(string): 
 			try:
 				float(string)
@@ -129,7 +129,7 @@ class Util:
 			except ValueError:
 				return False
 
-	 @staticmethod
+	@staticmethod
 		def isInteger(string): 
 			try:
 				int(string)
