@@ -180,7 +180,7 @@ def parse_settings(settings):
     #     settings["length"] = 5
  
 
-    return json.dumps(settings)
+    return json.dumps(base_settings)
 
 
 
