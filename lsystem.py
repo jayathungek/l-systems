@@ -2,21 +2,28 @@ from generator import Generator
 import json
 import sys 
 import error
+
 import handlers as gh 
+from util import Util
+import params
 
 class LSystem:
-	def __init__(self, settings, cmd=True):
+	def __init__(self, settings, random=False, cmd=True ):
 		self.DEFAULT_IMG_DIR = "./"
 		self.REQUIRED_FIELDS = ["alphabet", "axiom", "rules", "iterations", "animate", "graphics_class"] 
 		self.settings = None 
-		self.handler = None
+		self.handler = None 
 
 		if cmd:
 			self.get_settings_from_json_file(settings)
 		else:
 			self.get_settings_from_json(settings)
 
+		if random:
+			self.randomise_settings()
+
 		self.import_handler(self.settings["graphics_class"])
+
 
 
 	def import_handler(self, graphics_class): 
@@ -113,11 +120,28 @@ class LSystem:
 		image = self.out(lstrings, self.handler)
 		return image
 
+	def randomise_settings(self):
+		colours = list(params.COLOURS.keys())
+
+		self.settings["iterations"] = Util.random_selection([4, 5])
+		self.settings["angle"] = Util.add_noise(self.settings["angle"], 10)
+		self.settings["w_factor"] = Util.random_selection([0.7, 0.75, 0.8, 0.85])
+		self.settings["w0"] = Util.random_selection([10, 15, 20, 25])
+
+		leaf_d = Util.get_random()
+		fruit_d = leaf_d/20
+		self.settings["leaf_density"] = leaf_d
+		self.settings["fruit_density"] = fruit_d
+
+		self.settings["leaf_colour"] = Util.random_selection(colours, exclude=["gray", "grey"])
+		self.settings["fruit_colour"] = Util.random_selection(colours, exclude=["gray", "grey"])
+		self.settings["start_colour"] = Util.random_selection(colours, exclude=["gray", "grey"])
+		self.settings["end_colour"] = Util.random_selection(colours, exclude=["gray", "grey"]) 
  
 
 if __name__ == "__main__":
 	settings = sys.argv[1]
-	lsg = LSystem(settings)
+	lsg = LSystem(settings, random=True)
 	lsg.run()
 
 	# s = "!(w)F(s)+(a)[[X]-(a)X]-(a)F(s)[-(a)F(s)X]+(a)X"

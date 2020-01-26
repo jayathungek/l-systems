@@ -103,6 +103,16 @@ def webhook():
                         except error.ParameterDoesNotExistError as e:
                             send_message(sender_id, "Error:" + e.message)
 
+                    elif is_at_beginning("RANDOM", message_text):
+                        msg = "Generating random tree...please wait.\n"
+                        send_message(sender_id, msg)
+                        image = create_image(settings, random=True)
+                        if image["status"] == "OK":
+                            send_image(sender_id, image["image_name"])
+                        else:
+                            send_message(sender_id, "Sorry, please try again")
+                        break
+
                     elif is_at_beginning("HELP", message_text):
                         msg = help_text()
                     elif is_at_beginning("TEST", message_text):
@@ -260,9 +270,9 @@ def is_at_beginning(word, string):
 
     return string[:len(word)] == word
 
-def create_image(settings):
+def create_image(settings, random=False):
     try:
-        lsg = LSystem(settings, cmd=False)
+        lsg = LSystem(settings, random=random, cmd=False)
         image_name = lsg.run()
         print("image created successfully at " + image_name)
         return {"status": "OK", "image_name": image_name}
