@@ -107,7 +107,8 @@ def webhook():
                     elif is_at_beginning("RANDOM", message_text):
                         msg = "Generating random tree...please wait.\n"
                         send_message(sender_id, msg)
-                        image = create_image(DEFAULT_SETTINGS, random=True)
+                        settings = json.dumps(DEFAULT_SETTINGS)
+                        image = create_image(settings, random=True)
                         if image["status"] == "OK":
                             send_image(sender_id, image["image_name"])
                         else:
