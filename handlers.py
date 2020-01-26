@@ -128,6 +128,11 @@ class PlantHandler:
 		self.animate = settings["animate"]
 		self.gifmaker = GifMaker() if self.animate else None
 		self.gif_factor = 64
+		self.leaf_steps = 20
+		self.leaf_stem = settings["length"]
+		self.fruit_stem = settings["length"] * 4
+		self.side = settings["length"] * 2
+		self.linger_frames = 20
 		self.start_colour = params.COLOURS[settings["start_colour"]]
 		self.end_colour = params.COLOURS[settings["end_colour"]]
 		self.fruit_colour = params.COLOURS[settings["fruit_colour"]]
@@ -135,6 +140,7 @@ class PlantHandler:
 		self.fruit_radius = settings["length"]
 		self.fruit_density = settings["fruit_density"]
 		self.leaf_density = settings["leaf_density"]
+		self.leaves = []
 
 	def get_colour_from_thickness(self, thickness):
 		base_thickness = self.settings["w0"]
@@ -158,13 +164,15 @@ class PlantHandler:
 		elif command == "O":
 			to_draw = Util.get_sign(self.fruit_density)
 			if to_draw == -1:
-				self.pen.draw_fruit(self.fruit_radius, self.fruit_colour)
+				self.pen.draw_fruit(self.fruit_stem, self.fruit_radius, self.fruit_colour)
 		elif command == "L":
 			to_draw = Util.get_sign(self.leaf_density)
 			if to_draw == -1:
 				pen_heading = self.pen.get_heading()
 				angle = Util.add_noise(pen_heading, 45)
-				self.pen.draw_leaf(10, angle, self.leaf_colour)
+				l = {"pos": self.pen.pos, "angle": angle}
+				self.leaves.append(l) 
+				# self.pen.draw_leaf(10, 10, angle, colour="#EA1CCC") 
 		elif command == "[":
 			self.pen.set_thickness(self.pen.thickness * self.settings["w_factor"])
 			self.stack.append({"pos": self.pen.get_pos(), 
@@ -190,6 +198,17 @@ class PlantHandler:
 				frame = self.pen.get_image()
 				self.gifmaker.add_frame(frame)
 			frame_num+=1
+
+		for step in range(self.leaf_steps):
+			for leaf in self.leaves:
+				self.pen.draw_leaf(self.leaf_stem, (step/self.leaf_steps)*self.side, leaf["angle"], self.leaf_colour, leaf["pos"]) 
+			frame = self.pen.get_image()
+			self.gifmaker.add_frame(frame)
+
+		for i in range(self.linger_frames):
+			frame = self.pen.get_image()
+			self.gifmaker.add_frame(frame)
+
 
 		self.pen.show()
 		filename = self.name

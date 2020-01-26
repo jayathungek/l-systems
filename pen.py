@@ -22,28 +22,31 @@ class Pen:
 			self.drawing.line(self.pos + newpos, fill=self.colour, width=int(self.thickness))
 		self.pos = newpos
 
-	def draw_fruit(self, r, colour, pos=None):
+	def draw_fruit(self, stem, r, colour, pos=None):
 		if pos is None:
 			pos = self.pos
 
-		newpos = (pos[0], pos[1] + 20)
+		newpos = (pos[0], pos[1] + stem)
 		self.drawing.line(pos + newpos, fill=self.colour, width=int(self.thickness))
 		
 		x = (newpos[0] - r, newpos[1] - r)
 		y = (newpos[0] + r, newpos[1] + r)
 		self.drawing.ellipse([x, y], fill=colour)
 
-	def draw_leaf(self, side, angle, colour, pos=None):
-		cur_pos = self.pos
+	def draw_leaf(self, stem, side, angle, colour, pos=None):
+		if pos is None:
+			pos = self.pos
+
+		cur_pos = pos
+		self.set_pos(pos)
 		cur_heading = self.heading
 		leaf_int_angle = 30
 		polygon = []
-		if pos is None:
-			pos = self.pos
+
 		
 
 		self.set_heading(angle)
-		self.forward(side)
+		self.forward(stem)
 		polygon.append(self.pos)
 		self.up()
 
