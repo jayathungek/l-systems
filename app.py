@@ -24,6 +24,7 @@ TEST = ('{"alphabet": "XF-+[]",'
         '"graphics_class": "PlantHandler"}')
 
 PLANT_BASE = "./settings/plant_example.json"
+DEFAULT_SETTINGS = Util.get_settings_from_json_file(PLANT_BASE)
 
 
 @app.route('/', methods=['GET'])
@@ -58,7 +59,7 @@ def respond():
 
 @app.route('/', methods=['POST'])
 def webhook():
-    global TEST
+    global TEST, DEFAULT_SETTINGS
 
     # endpoint for processing incoming messaging events
 
@@ -106,7 +107,7 @@ def webhook():
                     elif is_at_beginning("RANDOM", message_text):
                         msg = "Generating random tree...please wait.\n"
                         send_message(sender_id, msg)
-                        image = create_image(settings, random=True)
+                        image = create_image(DEFAULT_SETTINGS, random=True)
                         if image["status"] == "OK":
                             send_image(sender_id, image["image_name"])
                         else:
@@ -152,8 +153,8 @@ def field_exists(field, settings):
         return False
 
 def parse_settings(settings):
-    lines = settings.split("\n")
-    default_settings = Util.get_settings_from_json_file(PLANT_BASE)
+    global DEFAULT_SETTINGS
+    lines = settings.split("\n") 
 
     for i, line in enumerate(lines):
         f_v = line.split(":")
@@ -161,7 +162,7 @@ def parse_settings(settings):
             field = f_v[0].lower()
             value = f_v[1].lower()
 
-            if not field_exists(field, default_settings):
+            if not field_exists(field, DEFAULT_SETTINGS):
                 raise error.ParameterDoesNotExistError(field)
 
 
@@ -202,11 +203,11 @@ def parse_settings(settings):
 
 
             
-            default_settings[field] = value
+            DEFAULT_SETTINGS[field] = value
         else:
             raise error.MalformedSettingsError(i) 
 
-    return json.dumps(default_settings)
+    return json.dumps(DEFAULT_SETTINGS)
 
 
 
