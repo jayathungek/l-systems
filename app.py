@@ -262,7 +262,7 @@ def is_at_beginning(word, string):
     return string[:len(word)] == word
 
 def create_image(settings, random=False):
-    signal.alarm(5)
+    signal.alarm(1)
     # try:
     lsg = LSystem(settings, random, cmd=False)
     image_name = lsg.run()
