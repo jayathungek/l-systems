@@ -5,23 +5,10 @@ import json, os, requests
 
 import params
 import error
+import signal
 from util import Util
 
-app = Flask(__name__)
-
-TEST = ('{"alphabet": "XF-+[]",'
-        '"axiom": "X",'
-        '"rules": ['
-                    '{"in": "F",'
-                    '"out": "FF"},'
-                    '{"in": "X",'
-                    '"out": "F+[[X]-X]-F[-FX]+X"}'
-                  '],'
-        '"iterations": 5,'
-        '"animate": true,'
-        '"angle": 25,'
-        '"length": 5,'
-        '"graphics_class": "PlantHandler"}')
+app = Flask(__name__) 
 
 PLANT_BASE = "./settings/plant_example.json"
 DEFAULT_SETTINGS = Util.get_settings_from_json_file(PLANT_BASE)
@@ -59,7 +46,7 @@ def respond():
 
 @app.route('/', methods=['POST'])
 def webhook():
-    global TEST, DEFAULT_SETTINGS
+    global DEFAULT_SETTINGS
 
     # endpoint for processing incoming messaging events
 
@@ -92,11 +79,11 @@ def webhook():
                             msg = "You provided the following settings:\n" + settings + "\n"
                             send_message(sender_id, msg)
                             image = create_image(settings)
-                            if image["status"] == "OK":
-                                send_image(sender_id, image["image_name"])
-                            else:
-                                send_message(sender_id, "Sorry, please try again")
-                            break
+                            # if image["status"] == "OK":
+                            send_image(sender_id, image["image_name"])
+                            # else:
+                            #     send_message(sender_id, "Sorry, please try again")
+                            # break
 
                         except error.MalformedSettingsError as e:
                             send_message(sender_id, "Error:" + e.message)
@@ -122,14 +109,7 @@ def webhook():
                         break
 
                     elif is_at_beginning("HELP", message_text):
-                        msg = help_text()
-                    elif is_at_beginning("TEST", message_text):
-                        msg = "generating test image"
-                        send_message(sender_id, msg)
-
-                        filename = create_image(TEST) 
-                        send_image(sender_id, filename)
-                        break
+                        msg = help_text() 
                     else:
                         msg = greeting_text()
 
@@ -279,14 +259,22 @@ def is_at_beginning(word, string):
     return string[:len(word)] == word
 
 def create_image(settings, random=False):
-    try:
-        lsg = LSystem(settings, random, cmd=False)
-        image_name = lsg.run()
-        print("image created successfully at " + image_name)
-        return {"status": "OK", "image_name": image_name}
-    except Exception as e:
-        print(e)
-        return{"status": "error"}
+    # signal.alarm(5)
+    # try:
+    lsg = LSystem(settings, random, cmd=False)
+    image_name = lsg.run()
+    print("image created successfully at " + image_name)
+    # signal.alarm(0)
+    return image_name
+    # except Exception as e:
+    #     print(e)
+    #     return{"status": "error"}
+    
+
+
+def timeout_handler(signum, frame):
+    print("Timeout was reached.")
+    raise error.ResponseTimeoutError()
 
 
 
@@ -315,6 +303,9 @@ def greeting_text():
             '"HELP" to see how to do so.'
             )
     return text
+
+signal.signal(signal.SIGALRM, timeout_handler)
+
 
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support
