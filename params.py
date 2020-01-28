@@ -11,3 +11,5 @@ COLOURS = {
 	"purple": "#E356FF",
 	"orange": "#FFA24F"
 }
+
+TIMEOUT = 20
