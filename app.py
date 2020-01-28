@@ -80,7 +80,7 @@ def webhook():
                             send_message(sender_id, msg)
                             image = create_image(settings)
                             # if image["status"] == "OK":
-                            send_image(sender_id, image["image_name"])
+                            send_image(sender_id, image)
                             # else:
                             #     send_message(sender_id, "Sorry, please try again")
                             # break
@@ -102,10 +102,10 @@ def webhook():
                         send_message(sender_id, msg)
                         settings = json.dumps(DEFAULT_SETTINGS)
                         image = create_image(settings, random=True)
-                        if image["status"] == "OK":
-                            send_image(sender_id, image["image_name"])
-                        else:
-                            send_message(sender_id, "Sorry, please try again")
+                        # if image["status"] == "OK":
+                        send_image(sender_id, image["image_name"])
+                        # else:
+                        #     send_message(sender_id, "Sorry, please try again")
                         break
 
                     elif is_at_beginning("HELP", message_text):
