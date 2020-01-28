@@ -35,5 +35,5 @@ class ParameterDoesNotExistError(Error):
 		self.message = "Parameter {} deos not exist".format(parameter)
 
 class ResponseTimeoutError(Error):
-	def __init__(self, parameter):
+	def __init__(self):
 		self.message = "Took too long to generate the tree."
