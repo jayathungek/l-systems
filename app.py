@@ -86,16 +86,19 @@ def webhook():
                             # break
 
                         except error.MalformedSettingsError as e:
-                            send_message(sender_id, "Error:" + e.message)
+                            send_message(sender_id, "Error: " + e.message)
 
                         except error.NegativeFieldError as e:
-                            send_message(sender_id, "Error:" + e.message)
+                            send_message(sender_id, "Error: " + e.message)
 
                         except error.ParameterError as e:
-                            send_message(sender_id, "Error:" + e.message)
+                            send_message(sender_id, "Error: " + e.message)
 
                         except error.ParameterDoesNotExistError as e:
-                            send_message(sender_id, "Error:" + e.message)
+                            send_message(sender_id, "Error: " + e.message)
+
+                        except error.ResponseTimeoutError as e:
+                            send_message(sender_id, "Error: " + e.message)
 
                     elif is_at_beginning("RANDOM", message_text):
                         msg = "Generating random tree...please wait.\n"
@@ -259,12 +262,12 @@ def is_at_beginning(word, string):
     return string[:len(word)] == word
 
 def create_image(settings, random=False):
-    # signal.alarm(5)
+    signal.alarm(5)
     # try:
     lsg = LSystem(settings, random, cmd=False)
     image_name = lsg.run()
     print("image created successfully at " + image_name)
-    # signal.alarm(0)
+    signal.alarm(0)
     return image_name
     # except Exception as e:
     #     print(e)
