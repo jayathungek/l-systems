@@ -307,9 +307,12 @@ def greeting_text():
             )
     return text
 
-signal.signal(signal.SIGALRM, timeout_handler)
 
 
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support
-    app.run(threaded=True, port=5000)
+    signal.signal(signal.SIGALRM, timeout_handler)
+    try:
+        app.run(threaded=True, port=5000)
+    except error.ResponseTimeoutError as e:
+        print("app timeout")
