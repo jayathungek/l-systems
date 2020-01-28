@@ -140,7 +140,7 @@ class LSystem:
 
 if __name__ == "__main__":
 	settings = sys.argv[1]
-	lsg = LSystem(settings, random=True)
+	lsg = LSystem(settings)
 	lsg.run()
 
 	# s = "!(w)F(s)+(a)[[X]-(a)X]-(a)F(s)[-(a)F(s)X]+(a)X"
