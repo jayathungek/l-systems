@@ -5,8 +5,7 @@ import json, os, requests
 
 import params
 import error
-import multiprocessing
-import time
+import signal
 from util import Util
 
 app = Flask(__name__) 
@@ -80,11 +79,12 @@ def webhook():
                             msg = "You provided the following settings:\n" + settings + "\n"
                             send_message(sender_id, msg)
                             image = create_image(settings)
+                            signal.alarm(0)
                             # if image["status"] == "OK":
                             send_image(sender_id, image)
                             # else:
                             #     send_message(sender_id, "Sorry, please try again")
-                            # break
+                            break
 
                         except error.MalformedSettingsError as e:
                             send_message(sender_id, "Error: " + e.message)
@@ -104,13 +104,30 @@ def webhook():
                     elif is_at_beginning("RANDOM", message_text):
                         msg = "Generating random tree...please wait.\n"
                         send_message(sender_id, msg)
-                        settings = json.dumps(DEFAULT_SETTINGS)
-                        image = create_image(settings, random=True)
-                        # if image["status"] == "OK":
-                        send_image(sender_id, image)
-                        # else:
-                        #     send_message(sender_id, "Sorry, please try again")
-                        break
+                        try:
+                            settings = json.dumps(DEFAULT_SETTINGS)
+                            image = create_image(settings, random=True)
+                            signal.alarm(0)
+                            # if image["status"] == "OK":
+                            send_image(sender_id, image)
+                            # else:
+                            #     send_message(sender_id, "Sorry, please try again")
+                            break
+
+                        except error.MalformedSettingsError as e:
+                            send_message(sender_id, "Error: " + e.message)
+
+                        except error.NegativeFieldError as e:
+                            send_message(sender_id, "Error: " + e.message)
+
+                        except error.ParameterError as e:
+                            send_message(sender_id, "Error: " + e.message)
+
+                        except error.ParameterDoesNotExistError as e:
+                            send_message(sender_id, "Error: " + e.message)
+
+                        except error.ResponseTimeoutError as e:
+                            send_message(sender_id, "Error: " + e.message)
 
                     elif is_at_beginning("HELP", message_text):
                         msg = help_text() 
@@ -202,7 +219,9 @@ def parse_settings(settings):
 
 
 
-
+def timeout_handler(signum, frame):
+    print("Timeout triggered")
+    raise error.ResponseTimeoutError()
 
 def send_message(recipient_id, message_text):
 
@@ -262,7 +281,8 @@ def is_at_beginning(word, string):
 
     return string.lower()[:len(word.lower())] == word.lower()
 
-def create_image(settings, random=False): 
+def create_image(settings, random=False):
+    signal.alarm(1)
     lsg = LSystem(settings, random, cmd=False)
     image_name = lsg.run()
     print("image created successfully at " + image_name) 
@@ -299,5 +319,6 @@ def greeting_text():
 
 
 if __name__ == '__main__':
-    # Threaded option to enable multiple instances for multiple user access support 
+    # Threaded option to enable multiple instances for multiple user access support
+    signal.signal(signal.SIGALRM, timeout_handler) 
     app.run(threaded=True, port=5000)
