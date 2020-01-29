@@ -105,7 +105,7 @@ def webhook():
                         send_message(sender_id, msg)
                         try:
                             settings = json.dumps(DEFAULT_SETTINGS)
-                            image = create_image(settings, True)
+                            image = create_random_image(settings, True)
 
                             # if image["status"] == "OK":
                             send_image(sender_id, image)
@@ -276,8 +276,15 @@ def is_at_beginning(word, string):
     return string.lower()[:len(word.lower())] == word.lower()
 
 @timeout
-def create_image(settings, random=False): 
-    lsg = LSystem(settings, random, cmd=False)
+def create_image(settings): 
+    lsg = LSystem(settings, random=False, cmd=False)
+    image_name = lsg.run()
+    print("image created successfully at " + image_name) 
+    return image_name  
+
+@timeout
+def create_random_image(settings): 
+    lsg = LSystem(settings, random=True, cmd=False)
     image_name = lsg.run()
     print("image created successfully at " + image_name) 
     return image_name  
