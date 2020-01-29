@@ -105,7 +105,7 @@ def webhook():
                         send_message(sender_id, msg)
                         try:
                             settings = json.dumps(DEFAULT_SETTINGS)
-                            image = create_image(settings, random=True)
+                            image = create_image(settings, True)
 
                             # if image["status"] == "OK":
                             send_image(sender_id, image)
