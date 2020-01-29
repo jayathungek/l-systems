@@ -276,8 +276,7 @@ def is_at_beginning(word, string):
     return string.lower()[:len(word.lower())] == word.lower()
 
 @timeout
-def create_image(settings, random=False):
-    # signal.alarm(1)
+def create_image(settings, random=False): 
     lsg = LSystem(settings, random, cmd=False)
     image_name = lsg.run()
     print("image created successfully at " + image_name) 
@@ -314,6 +313,5 @@ def greeting_text():
 
 
 if __name__ == '__main__':
-    # Threaded option to enable multiple instances for multiple user access support
-    # signal.signal(signal.SIGALRM, timeout_handler) 
+    # Threaded option to enable multiple instances for multiple user access support 
     app.run(threaded=True, port=5000)
