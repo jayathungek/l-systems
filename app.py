@@ -5,7 +5,8 @@ import json, os, requests
 
 import params
 import error
-import signal
+import multiprocessing
+import time
 from util import Util
 
 app = Flask(__name__) 
@@ -261,22 +262,12 @@ def is_at_beginning(word, string):
 
     return string.lower()[:len(word.lower())] == word.lower()
 
-def create_image(settings, random=False):
-    signal.alarm(1)
-    try:
-        lsg = LSystem(settings, random, cmd=False)
-        image_name = lsg.run()
-        print("image created successfully at " + image_name)
-        signal.alarm(0)
-        return image_name
-    except error.ResponseTimeoutError as e: 
-        raise error.ResponseTimeoutError()
-    
-
-
-def timeout_handler(signum, frame):
-    print("Timeout was reached.")
-    raise error.ResponseTimeoutError()
+def create_image(settings, random=False): 
+    lsg = LSystem(settings, random, cmd=False)
+    image_name = lsg.run()
+    print("image created successfully at " + image_name)
+    signal.alarm(0)
+    return image_name  
 
 
 
@@ -309,6 +300,5 @@ def greeting_text():
 
 
 if __name__ == '__main__':
-    # Threaded option to enable multiple instances for multiple user access support
-    signal.signal(signal.SIGALRM, timeout_handler)
+    # Threaded option to enable multiple instances for multiple user access support 
     app.run(threaded=True, port=5000)
