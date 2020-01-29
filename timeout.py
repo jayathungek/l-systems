@@ -4,7 +4,7 @@ import os
 import signal 
 
 def timeout(seconds=1):
-    def decorator(func):
+    def decorator(func, arg):
         def _handle_timeout(signum, frame):
             print("timeout triggered")
             raise error.ResponseTimeoutError()
