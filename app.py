@@ -270,7 +270,7 @@ def create_image(settings, random=False):
         signal.alarm(0)
         return image_name
     except error.ResponseTimeoutError as e: 
-        raise error.ResponseTimeoutError
+        raise error.ResponseTimeoutError()
     
 
 
