@@ -259,19 +259,18 @@ def is_at_beginning(word, string):
     if len(word) > len(string):
         return False
 
-    return string[:len(word)] == word
+    return string.lower()[:len(word.lower())] == word.lower()
 
 def create_image(settings, random=False):
     signal.alarm(1)
-    # try:
-    lsg = LSystem(settings, random, cmd=False)
-    image_name = lsg.run()
-    print("image created successfully at " + image_name)
-    signal.alarm(0)
-    return image_name
-    # except Exception as e:
-    #     print(e)
-    #     return{"status": "error"}
+    try:
+        lsg = LSystem(settings, random, cmd=False)
+        image_name = lsg.run()
+        print("image created successfully at " + image_name)
+        signal.alarm(0)
+        return image_name
+    except error.ResponseTimeoutError as e: 
+        raise error.ResponseTimeoutError
     
 
 
@@ -312,7 +311,4 @@ def greeting_text():
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support
     signal.signal(signal.SIGALRM, timeout_handler)
-    try:
-        app.run(threaded=True, port=5000)
-    except error.ResponseTimeoutError as e:
-        print("app timeout")
+    app.run(threaded=True, port=5000)
