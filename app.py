@@ -79,7 +79,6 @@ def webhook():
                             msg = "You provided the following settings:\n" + settings + "\n"
                             send_message(sender_id, msg)
                             image = create_image(settings)
-                            signal.alarm(0)
                             # if image["status"] == "OK":
                             send_image(sender_id, image)
                             # else:
@@ -100,6 +99,8 @@ def webhook():
 
                         except error.ResponseTimeoutError as e:
                             send_message(sender_id, "Error: " + e.message)
+
+                        signal.alarm(0)
 
                     elif is_at_beginning("RANDOM", message_text):
                         msg = "Generating random tree...please wait.\n"
@@ -107,7 +108,7 @@ def webhook():
                         try:
                             settings = json.dumps(DEFAULT_SETTINGS)
                             image = create_image(settings, random=True)
-                            signal.alarm(0)
+
                             # if image["status"] == "OK":
                             send_image(sender_id, image)
                             # else:
@@ -128,6 +129,8 @@ def webhook():
 
                         except error.ResponseTimeoutError as e:
                             send_message(sender_id, "Error: " + e.message)
+
+                        signal.alarm(0)
 
                     elif is_at_beginning("HELP", message_text):
                         msg = help_text() 
