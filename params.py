@@ -12,4 +12,4 @@ COLOURS = {
 	"orange": "#FFA24F"
 }
 
-TIMEOUT = 20
+TIMEOUT = 1
