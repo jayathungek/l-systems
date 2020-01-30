@@ -78,7 +78,7 @@ def webhook():
                             settings = parse_settings(message_text[oplen:])
                             msg = "You provided the following settings:\n" + settings + "\n"
                             send_message(sender_id, msg)
-                            image = create_image(settings)
+                            image = create_image(settings)()
                             # if image["status"] == "OK":
                             send_image(sender_id, image)
                             # else:
@@ -105,7 +105,7 @@ def webhook():
                         send_message(sender_id, msg)
                         try:
                             settings = json.dumps(DEFAULT_SETTINGS)
-                            image = create_random_image(settings)
+                            image = create_random_image(settings)()
 
                             # if image["status"] == "OK":
                             send_image(sender_id, image)
@@ -283,11 +283,13 @@ def create_image(settings):
     return image_name  
 
 @timeout
-def create_random_image(settings): 
+def create_random_image(settings):
     lsg = LSystem(settings, random=True, cmd=False)
     image_name = lsg.run()
     print("image created successfully at " + image_name) 
-    return image_name  
+    return image_name
+
+# create_random_image = timeout(create_random_image)
 
 
 
@@ -322,3 +324,7 @@ def greeting_text():
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support 
     app.run(threaded=True, port=5000)
+    # settings = json.dumps(DEFAULT_SETTINGS) 
+    # image = create_random_image(settings)()
+    # print(image)
+
