@@ -1,10 +1,12 @@
 from functools import wraps
 import error
 import os
-import signal 
+import signal
 
-def timeout(seconds=1):
-    def decorator(func):
+import params
+
+def timeout(func, seconds=params.TIMEOUT):
+    def decorator(decarg): 
         def _handle_timeout(signum, frame):
             print("timeout triggered")
             raise error.ResponseTimeoutError()
@@ -13,7 +15,8 @@ def timeout(seconds=1):
             signal.signal(signal.SIGALRM, _handle_timeout)
             signal.alarm(seconds)
             try:
-                result = func(*args, **kwargs)
+                print("starting image creation")
+                result = func(decarg)
             finally:
                 signal.alarm(0)
             return result
