@@ -78,11 +78,8 @@ def webhook():
                             settings = parse_settings(message_text[oplen:])
                             msg = "You provided the following settings:\n" + settings + "\n"
                             send_message(sender_id, msg)
-                            image = create_image(settings)()
-                            # if image["status"] == "OK":
-                            send_image(sender_id, image)
-                            # else:
-                            #     send_message(sender_id, "Sorry, please try again")
+                            image = create_image(settings)() 
+                            send_image(sender_id, image) 
                             break
 
                         except error.MalformedSettingsError as e:
@@ -105,12 +102,8 @@ def webhook():
                         send_message(sender_id, msg)
                         try:
                             settings = json.dumps(DEFAULT_SETTINGS)
-                            image = create_random_image(settings)()
-
-                            # if image["status"] == "OK":
-                            send_image(sender_id, image)
-                            # else:
-                            #     send_message(sender_id, "Sorry, please try again")
+                            image = create_random_image(settings)() 
+                            send_image(sender_id, image) 
                             break
 
                         except error.MalformedSettingsError as e:
@@ -130,11 +123,12 @@ def webhook():
 
                     elif is_at_beginning("HELP", message_text):
                         msg = help_text() 
+                        send_message(sender_id, msg)
                     else:
                         msg = greeting_text()
+                        send_message(sender_id, msg)
 
 
-                    send_message(sender_id, msg)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
