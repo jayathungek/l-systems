@@ -2,13 +2,14 @@ from PIL import Image, ImageDraw
 import math
 
 import params
+from util import Util
 
 class Pen:
 	def __init__(self, image_dimensions, thickness, pen_pos=(0, 0)):
 		self.pos = pen_pos
 		self.heading = 0
 		self.is_down = False
-		self.bg = params.COLOURS["gray"]
+		self.bg = params.COLOURS["dark_gray"]
 		self.colour = params.COLOURS["pink"]
 		self.canvas_size = image_dimensions
 		self.thickness = thickness
@@ -36,6 +37,9 @@ class Pen:
 	def draw_leaf(self, stem, side, angle, colour, pos=None):
 		if pos is None:
 			pos = self.pos
+
+		fill_colour = colour
+		self.make_darker(0.2)
 
 		cur_pos = pos
 		self.set_pos(pos)
@@ -67,7 +71,10 @@ class Pen:
 
 		self.down()
 
-		self.drawing.polygon(polygon, fill=colour)
+		self.set_colour(fill_colour)
+
+		line = Util.lerp_colour(self.get_colour(), params.COLOURS["black"], 0.2)
+		self.drawing.polygon(polygon, fill=self.get_colour(), outline=line)
 
 
 
@@ -109,6 +116,15 @@ class Pen:
 
 	def set_colour(self, new_colour):
 		self.colour = new_colour
+
+	def get_colour(self):
+		return self.colour
+
+	def make_darker(self, amount):
+		black = "#000000"
+		new_colour = Util.lerp_colour(self.get_colour(), black, amount)
+		self.set_colour(new_colour)
+
 
 	def set_bg(self, new_bg):
 		self.bg = new_bg

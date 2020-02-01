@@ -80,14 +80,13 @@ class Util:
 
 	@staticmethod
 	def rgb_to_hex(rgb):
-		r = hex(rgb[0])[2:]
-		g = hex(rgb[1])[2:]
-		b = hex(rgb[2])[2:]
+		r = hex(rgb[0])[2:].zfill(2)
+		g = hex(rgb[1])[2:].zfill(2)
+		b = hex(rgb[2])[2:].zfill(2)
 		return "#" + r + g + b
 
 	@staticmethod
-	def lerp_colour(c1, c2, percent):
-	    '''assumes color is rgb between (0, 0, 0) and (255, 255, 255)'''
+	def lerp_colour(c1, c2, percent): 
 	    if c1 == c2:
 	    	return c1
 	    
@@ -98,7 +97,11 @@ class Util:
 	    c2 = np.array(c2)
 	    vector = c2-c1
 	    c_new = c1 + vector * percent
-	    return Util.rgb_to_hex((int(c_new[0]), int(c_new[1]), int(c_new[2])))
+	    h = Util.rgb_to_hex((int(c_new[0]), int(c_new[1]), int(c_new[2])))
+
+	    if len(h) != 7:
+	    	print((int(c_new[0]), int(c_new[1]), int(c_new[2])))
+	    return h
 
 	@staticmethod
 	def get_settings_from_json_file(filename): 
@@ -153,7 +156,7 @@ class Util:
 
 
 if __name__ == "__main__":
-	c1 = "#FFFFFF"
+	c1 = "#e39046"
 	c2 = "#000000"
-	c3 = Util.lerp_colour(c1, c2, 0.5)
+	c3 = Util.lerp_colour(c1, c2, 0.3141598)
 	print(c3)
