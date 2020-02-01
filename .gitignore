@@ -6,4 +6,4 @@
 venv/*
 token
 img/*
-
+settings/plant_test.json
