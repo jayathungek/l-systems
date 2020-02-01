@@ -283,10 +283,6 @@ def create_random_image(settings):
     print("image created successfully at " + image_name) 
     return image_name
 
-# create_random_image = timeout(create_random_image)
-
-
-
 def help_text():
     text = ('-LSystemsGifs Help-\n'
             'To supply settings, start your message with "SETTINGS". '
