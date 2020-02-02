@@ -25,6 +25,144 @@ class GifMaker:
 		imageio.mimsave(gif_name, self.images, duration=0.01)
 		# optimize(gif_name)
 
+class PlantHandler:
+	def __init__(self, settings):
+		self.name = "plant"
+		self.settings = settings  
+		self.size = (500, 500)
+		self.startpos = (self.size[0]/2, self.size[1])
+		self.pen = Pen(self.size, self.settings["w0"], self.startpos) 
+		self.pen.set_heading(-90)
+		self.stack = []
+
+		self.animate = settings["animate"]
+		self.gifmaker = GifMaker() if self.animate else None
+		self.gif_factor = 64
+		self.leaf_steps = 20
+		self.leaf_animation_steps = 4
+		self.leaf_animation_linger_frames = 10
+		self.leaf_stem = settings["length"]
+		self.fruit_stem = settings["length"] * 4
+		self.side = settings["length"] * 2
+		self.linger_frames = 20
+		self.start_colour = params.COLOURS[settings["start_colour"]]
+		self.end_colour = params.COLOURS[settings["end_colour"]]
+		self.fruit_colour = params.COLOURS[settings["fruit_colour"]]
+		self.leaf_colour = params.COLOURS[settings["leaf_colour"]]
+		self.fruit_radius = settings["length"]
+		self.fruit_density = settings["fruit_density"]
+		self.leaf_density = settings["leaf_density"]
+		self.leaves = []
+		self.finished_tree = True
+
+	def get_colour_from_thickness(self, thickness):
+		base_thickness = self.settings["w0"]
+		r = thickness/base_thickness
+		return Util.lerp_colour(self.end_colour, self.start_colour, r)
+ 
+
+
+	def execute_command(self, command):
+		curr_heading = self.pen.get_heading()
+		if command == "F":
+			self.pen.forward(self.settings["length"])
+		elif command == "-":
+			angle = Util.add_noise(self.settings["angle"], self.settings["angle_leeway"])
+			angle *= Util.get_sign(0.9)
+			self.pen.right(angle)
+		elif command == "+":
+			angle = Util.add_noise(self.settings["angle"], self.settings["angle_leeway"])
+			angle *= Util.get_sign(0.9)
+			self.pen.left(angle)
+		elif command == "O":
+			to_draw = Util.get_sign(self.fruit_density)
+			if to_draw == -1:
+				self.pen.draw_fruit(self.fruit_stem, self.fruit_radius, self.fruit_colour)
+		elif command == "L":
+			to_draw = Util.get_sign(self.leaf_density)
+			if to_draw == -1:
+				pen_heading = self.pen.get_heading()
+				angle = Util.add_noise(pen_heading, 45)
+				l = {"pos": self.pen.pos, "angle": angle}
+				self.leaves.append(l) 
+				# self.pen.draw_leaf(10, 10, angle, colour="#EA1CCC") 
+		elif command == "[":
+			self.pen.set_thickness(self.pen.thickness * self.settings["w_factor"])
+			self.stack.append({"pos": self.pen.get_pos(), 
+				"heading": self.pen.get_heading(),
+				"thickness": self.pen.get_thickness()})
+		elif command == "]":
+			cmd = self.stack.pop()
+			self.pen.up()
+			self.pen.set_heading(cmd["heading"])
+			self.pen.set_pos(cmd["pos"])
+			self.pen.set_thickness(cmd["thickness"])
+			new_colour = self.get_colour_from_thickness(self.pen.thickness)
+			self.pen.set_colour(new_colour)
+			self.pen.down()
+
+	def draw_leaves(self, step, angle_offset=0):
+		for leaf in self.leaves:
+			self.pen.draw_leaf(self.leaf_stem, (step/self.leaf_steps)*self.side, leaf["angle"] + angle_offset, self.leaf_colour, leaf["pos"]) 
+		f = self.pen.get_image()
+		return f
+		
+
+
+	def create_image(self, string, directory):
+		self.pen.down()
+		self.pen.set_colour(self.start_colour)
+		frame_num = 0
+		for command in string:
+			self.execute_command(command)
+			if self.animate and (frame_num%self.gif_factor==0) and (not self.finished_tree):
+				frame = self.pen.get_image()
+				self.gifmaker.add_frame(frame)
+			frame_num+=1
+
+		base_frame = self.pen.get_image().copy()
+		# self.gifmaker.add_frame(base_frame)
+
+		if self.finished_tree:
+			da = 5
+			to_turn = da 
+			for i in range(self.leaf_animation_steps):
+				self.pen.set_base_image(base_frame) 
+				if i < int(self.leaf_animation_steps/4):
+					frame = self.draw_leaves(self.leaf_steps, to_turn)
+					to_turn -= da
+				elif i >= int(self.leaf_animation_steps/4) and i < int(self.leaf_animation_steps/2):
+					frame = self.draw_leaves(self.leaf_steps, to_turn)
+					to_turn += da
+				elif i >= int(self.leaf_animation_steps/2) and i < int(self.leaf_animation_steps * 4/3):
+					frame = self.draw_leaves(self.leaf_steps, to_turn)
+					to_turn += da
+				else:
+					frame = self.draw_leaves(self.leaf_steps, to_turn)
+					to_turn -= da
+
+				for _ in range(self.leaf_animation_linger_frames):
+					self.gifmaker.add_frame(frame)
+
+
+		else:
+			for step in range(self.leaf_steps):
+				frame = self.draw_leaves(step)
+				self.gifmaker.add_frame(frame)
+
+			for i in range(self.linger_frames):
+				frame = self.pen.get_image()
+				self.gifmaker.add_frame(frame) 
+		self.pen.show()
+		filename = self.name
+		if self.animate:
+			self.gifmaker.save_gif(directory + self.name + GIF_EXT)
+			filename += GIF_EXT
+		else:
+			self.pen.save(directory + self.name + IMG_EXT)
+			filename += IMG_EXT
+
+		return  directory + filename
 
 class DragonHandler:
 	def __init__(self, settings):
@@ -115,204 +253,8 @@ class KochHandler:
 		return  directory + filename
 		
 
-class PlantHandler:
-	def __init__(self, settings):
-		self.name = "plant"
-		self.settings = settings  
-		self.size = (500, 500)
-		self.startpos = (self.size[0]/2, self.size[1])
-		self.pen = Pen(self.size, self.settings["w0"], self.startpos) 
-		self.pen.set_heading(-90)
-		self.stack = []
-
-		self.animate = settings["animate"]
-		self.gifmaker = GifMaker() if self.animate else None
-		self.gif_factor = 64
-		self.leaf_steps = 20
-		self.leaf_stem = settings["length"]
-		self.fruit_stem = settings["length"] * 4
-		self.side = settings["length"] * 2
-		self.linger_frames = 20
-		self.start_colour = params.COLOURS[settings["start_colour"]]
-		self.end_colour = params.COLOURS[settings["end_colour"]]
-		self.fruit_colour = params.COLOURS[settings["fruit_colour"]]
-		self.leaf_colour = params.COLOURS[settings["leaf_colour"]]
-		self.fruit_radius = settings["length"]
-		self.fruit_density = settings["fruit_density"]
-		self.leaf_density = settings["leaf_density"]
-		self.leaves = []
-
-	def get_colour_from_thickness(self, thickness):
-		base_thickness = self.settings["w0"]
-		r = thickness/base_thickness
-		return Util.lerp_colour(self.end_colour, self.start_colour, r)
- 
 
 
-	def execute_command(self, command):
-		curr_heading = self.pen.get_heading()
-		if command == "F":
-			self.pen.forward(self.settings["length"])
-		elif command == "-":
-			angle = Util.add_noise(self.settings["angle"], self.settings["angle_leeway"])
-			angle *= Util.get_sign(0.9)
-			self.pen.right(angle)
-		elif command == "+":
-			angle = Util.add_noise(self.settings["angle"], self.settings["angle_leeway"])
-			angle *= Util.get_sign(0.9)
-			self.pen.left(angle)
-		elif command == "O":
-			to_draw = Util.get_sign(self.fruit_density)
-			if to_draw == -1:
-				self.pen.draw_fruit(self.fruit_stem, self.fruit_radius, self.fruit_colour)
-		elif command == "L":
-			to_draw = Util.get_sign(self.leaf_density)
-			if to_draw == -1:
-				pen_heading = self.pen.get_heading()
-				angle = Util.add_noise(pen_heading, 45)
-				l = {"pos": self.pen.pos, "angle": angle}
-				self.leaves.append(l) 
-				# self.pen.draw_leaf(10, 10, angle, colour="#EA1CCC") 
-		elif command == "[":
-			self.pen.set_thickness(self.pen.thickness * self.settings["w_factor"])
-			self.stack.append({"pos": self.pen.get_pos(), 
-				"heading": self.pen.get_heading(),
-				"thickness": self.pen.get_thickness()})
-		elif command == "]":
-			cmd = self.stack.pop()
-			self.pen.up()
-			self.pen.set_heading(cmd["heading"])
-			self.pen.set_pos(cmd["pos"])
-			self.pen.set_thickness(cmd["thickness"])
-			new_colour = self.get_colour_from_thickness(self.pen.thickness)
-			self.pen.set_colour(new_colour)
-			self.pen.down()
-
-	def create_image(self, string, directory):
-		self.pen.down()
-		self.pen.set_colour(self.start_colour)
-		frame_num = 0
-		for command in string:
-			self.execute_command(command)
-			if self.animate and frame_num%self.gif_factor==0:
-				frame = self.pen.get_image()
-				self.gifmaker.add_frame(frame)
-			frame_num+=1
-
-		for step in range(self.leaf_steps):
-			for leaf in self.leaves:
-				self.pen.draw_leaf(self.leaf_stem, (step/self.leaf_steps)*self.side, leaf["angle"], self.leaf_colour, leaf["pos"]) 
-			frame = self.pen.get_image()
-			self.gifmaker.add_frame(frame)
-
-		for i in range(self.linger_frames):
-			frame = self.pen.get_image()
-			self.gifmaker.add_frame(frame)
-
-
-		self.pen.show()
-		filename = self.name
-		if self.animate:
-			self.gifmaker.save_gif(directory + self.name + GIF_EXT)
-			filename += GIF_EXT
-		else:
-			self.pen.save(directory + self.name + IMG_EXT)
-			filename += IMG_EXT
-
-		return  directory + filename
-
-
-class PlantHandlerNew:
-	def __init__(self, settings):
-		self.name = "plant"
-		self.length = settings["length"]
-		self.angle = settings["angle"]
-		self.size = (500, 500)
-		self.startpos = (self.size[0]/2, self.size[1])
-		self.pen = Pen(self.size, settings["w0"], self.startpos) 
-		self.pen.set_heading(-90)
-		self.stack = []
-		self.step = 0
-
-		self.animate = settings["animate"]
-		self.gifmaker = GifMaker() if self.animate else None
-		self.gif_factor = 64
- 
-
-
-	def execute_command(self, command, param=None):
-		curr_heading = self.pen.get_heading()
-		if command == "F":
-			self.pen.forward(param)
-		elif command == "-":
-			self.pen.right(param)
-		elif command == "+":
-			self.pen.left(param)
-		elif command == "!":
-			self.pen.set_thickness(param)
-		elif command == "[":
-			self.stack.append({"pos": self.pen.get_pos(), "heading": self.pen.get_heading()})
-		elif command == "]":
-			cmd = self.stack.pop()
-			self.pen.up()
-			self.pen.set_heading(cmd["heading"])
-			self.pen.set_pos(cmd["pos"])
-			self.pen.down()
-
-	def process_symbol(self, symbol, string):
-		if symbol == "[" or symbol == "]" or symbol == "X":
-			self.execute_command(symbol)
-			self.step += 1
-			return 
-
-		param_struct = self.extract_parameter(self.step+1, string)
-		param = param_struct[0]
-		new_index = param_struct[1]
-		self.step = new_index
-
-		self.execute_command(symbol, param)
-
-	def extract_parameter(self, start, string): 
-		num = ""
-		idx = start + 1
-		cur = string[idx]
-		while cur != ")": 
-			num += string[idx]
-			idx += 1
-			cur = string[idx]
-
-		return (float(num), idx+1)
-
-	def create_image(self, string, directory):
-		self.pen.down()
-		print(string)
-		# frame_num = 0
-		# for command in string:
-		# 	self.execute_command(command)
-		# 	if self.animate and frame_num%self.gif_factor==0:
-		# 		frame = self.pen.get_image()
-		# 		self.gifmaker.add_frame(frame)
-		# 	frame_num+=1
-		frame_num = 0
-		while (self.step < len(string)):
-			self.process_symbol(string[self.step], string)
-			if self.animate and frame_num%self.gif_factor==0:
-				frame = self.pen.get_image()
-				self.gifmaker.add_frame(frame)
-			frame_num+=1
-
-
-		self.pen.show()
-		filename = self.name
-		if self.animate:
-			self.gifmaker.save_gif(directory + self.name + GIF_EXT)
-			filename += GIF_EXT
-		else:
-			self.pen.save(directory + self.name + IMG_EXT)
-			filename += IMG_EXT
-
-		return  directory + filename
-		
 
 
 class BTreeHandler:

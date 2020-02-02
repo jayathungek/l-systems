@@ -3,6 +3,8 @@ import numpy as np
 import json
 
 class Util:
+	TRUTHY = ["yes", "true", "y", "1", "t"]
+	FALSEY = ["no", "false", "n", "0", "f"]
 
 	@staticmethod
 	def add_value_to_hex(hex_string, value, upper_limit, lower_limit):
@@ -141,6 +143,19 @@ class Util:
 			int(string)
 			return True
 		except ValueError:
+			return False
+
+	@staticmethod
+	def isBool(string):
+		if (string.lower() not in TRUTHY) and (string.lower() not in FALSEY):
+			return False
+		return True
+
+	@staticmethod
+	def strToBool(string):
+		if string.lower() in TRUTHY:
+			return True
+		elif string.lower() in FALSEY:
 			return False
 
 	@staticmethod

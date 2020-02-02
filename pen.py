@@ -14,7 +14,7 @@ class Pen:
 		self.canvas_size = image_dimensions
 		self.thickness = thickness
 
-		self.image = Image.new('RGBA', self.canvas_size, self.bg)
+		self.image = Image.new('RGBA', self.canvas_size, self.bg) 
 		self.drawing = ImageDraw.Draw(self.image)
 
 	def forward(self, dist):
@@ -73,7 +73,7 @@ class Pen:
 
 		self.set_colour(fill_colour)
 
-		line = Util.lerp_colour(self.get_colour(), params.COLOURS["black"], 0.2)
+		line = Util.lerp_colour(self.get_colour(), params.COLOURS["black"], 0.1)
 		self.drawing.polygon(polygon, fill=self.get_colour(), outline=line)
 
 
@@ -135,11 +135,18 @@ class Pen:
 		self.image = Image.new('RGBA', self.canvas_size, self.bg)
 		self.drawing = ImageDraw.Draw(self.image)
 
+
 	def show(self):
 		self.image.show()
 
 	def save(self, filename):
 		self.image.save(filename, 'PNG')
+
+	def set_base_image(self, frame):
+		im_w, im_h = self.image.size
+		f_w, f_h = frame.size
+		offset = ((im_w - f_w) // 2, (im_h - f_h) // 2)
+		self.image.paste(frame)
 
 	def get_image(self):
 		return self.image
