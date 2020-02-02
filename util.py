@@ -147,15 +147,15 @@ class Util:
 
 	@staticmethod
 	def isBool(string):
-		if (string.lower() not in TRUTHY) and (string.lower() not in FALSEY):
+		if (string.lower() not in Util.TRUTHY) and (string.lower() not in Util.FALSEY):
 			return False
 		return True
 
 	@staticmethod
 	def strToBool(string):
-		if string.lower() in TRUTHY:
+		if string.lower() in Util.TRUTHY:
 			return True
-		elif string.lower() in FALSEY:
+		elif string.lower() in Util.FALSEY:
 			return False
 
 	@staticmethod
@@ -171,7 +171,11 @@ class Util:
 
 
 if __name__ == "__main__":
-	c1 = "#e39046"
-	c2 = "#000000"
-	c3 = Util.lerp_colour(c1, c2, 0.3141598)
-	print(c3)
+	# c1 = "#e39046"
+	# c2 = "#000000"
+	# c3 = Util.lerp_colour(c1, c2, 0.3141598)
+	# print(c3)
+	s = "1"
+	if Util.isBool(s):
+		print(Util.strToBool(s))
+
