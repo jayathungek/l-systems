@@ -40,7 +40,7 @@ class PlantHandler:
 		self.gif_factor = 64
 		self.leaf_steps = 20
 		self.leaf_animation_steps = 4
-		self.leaf_animation_linger_frames = 5
+		self.leaf_animation_linger_frames = 10
 		self.leaf_stem = settings["length"]
 		self.fruit_stem = settings["length"] * 4
 		self.side = settings["length"] * 2
