@@ -201,6 +201,11 @@ def parse_settings(settings):
                         raise error.ParameterError(field, value, "Density must be between 0 and 1.")    
                 else:
                     raise error.ParameterError(field, value, "Density must be a number.")
+            elif field == "finished":
+                if Util.isBool(value):
+                    value = Util.strToBool(value)
+                else:
+                    raise error.ParameterError(field, value, "Must be a truthy or falsey string, eg yes/no, y/n etc.")
 
 
             
