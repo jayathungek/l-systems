@@ -53,7 +53,7 @@ class PlantHandler:
 		self.fruit_density = settings["fruit_density"]
 		self.leaf_density = settings["leaf_density"]
 		self.leaves = []
-		self.finished_tree = True
+		self.finished_tree = settings["finished"]
 
 	def get_colour_from_thickness(self, thickness):
 		base_thickness = self.settings["w0"]
