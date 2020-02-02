@@ -20,4 +20,5 @@
  "fruit_colour": "yellow",
  "start_colour": "blue",
  "end_colour": "pink",
+ "finished": true,
  "graphics_class": "PlantHandler"}
