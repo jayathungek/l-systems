@@ -76,7 +76,7 @@ def webhook():
                         print(message_text[oplen:])
                         try:
                             settings = parse_settings(message_text[oplen:])
-                            msg = "You provided the following settings:\n" + settings + "\n"
+                            msg = "Generating tree from settings...please wait."
                             send_message(sender_id, msg)
                             image = create_image(settings)() 
                             send_image(sender_id, image) 
