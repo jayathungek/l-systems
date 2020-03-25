@@ -123,7 +123,9 @@ def webhook():
 
                     elif is_at_beginning("HELP", message_text):
                         msg = help_text() 
+                        example = example_text()
                         send_message(sender_id, msg)
+                        send_message(sender_id, example)
                     else:
                         msg = greeting_text()
                         send_message(sender_id, msg)
@@ -290,23 +292,33 @@ def create_random_image(settings):
 
 def help_text():
     text = ('-LSystemsGifs Help-\n'
-            'To supply settings, start your message with "SETTINGS". '
-            'Then provide the following parameters, each on a new line:\n'
-            'type: Plant OR Dragon OR BTree OR Koch - How to interpret your L-System.\n\n'
-            'iterations: positive integer - Number of iterations to run your rules.\n\n'
-            'animate: true OR false - Decides whether to return an animated gif or a picture.\n\n'
-            'alphabet: string - Each character in this string is a symbol in the alphabet.\n\n'
-            'axiom: string - Starting point of the L-system. Must only be made up of '
-            'symbols from the previously defined alphabet.\n\n'
-            'rules: string > string | ... - String replacement rules that define your '
-            'L-System. Can have multiple rules, each separated by "|". '
-            'Each rule consists of two strings: The string to replace (left), and its replacement (right), '
-            'separated by ">".\n\n'
-            'Important:\n'
-            'ALL of these parameters must be present for SETTINGS to be processed correctly.\n'
-            'User-defined strings should not contain whitespace or the symbols ":", ">" or "|".\n'
+            'To supply settings, start your message with "SETTINGS".'
+            'Then provide the following parameters in any order, each on a new line:\n\n' 
+            'iterations: positive integer - Number of iterations between 0 - 5.\n'
+            'start: colour - Starting colour of the tree (roots).\n'
+            'end: colour - Ending colour of the tree (branch tips).\n'
+            'fruit: colour - Colour of fruits, if any.\n'
+            'leaf: colour - Colour of leaves, if any.\n'
+            'scale: positive real number - Size multiplier for tree segments.\n'
+            'fruit_density: positive real number - Relative frequency of fruits.\n'
+            'leaf_density: positive real number - Relative frequency of leaves.\n\n'
+            'The following message will have an example that you can copy and try out:'
             )
     return text
+
+def example_text():
+    text = ('SETTINGS\n'
+            'iterations:5\n'
+            'start:blue\n'
+            'end:pink\n'
+            'fruit:yellow\n'
+            'leaf:pink\n'
+            'scale:5.5\n'
+            'fruit_density:0.01\n'
+            'leaf_density:0.1\n'
+            )
+    return text
+
 
 def greeting_text():
     text = ('Hello! To interact with this bot, please provide some settings or type '
