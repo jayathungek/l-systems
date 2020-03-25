@@ -174,9 +174,9 @@ def parse_settings(settings):
                     value = int(value)
                     if value < 0:
                         raise error.NegativeFieldError(field, value)
-
-                    if value > 5:
-                        raise error.ParameterError(field, value, "Argument must be between 0 and 5.")    
+                        
+                    if value > 5 or value == 0:
+                        raise error.ParameterError(field, value, "Argument must be between 1 and 5.")    
                 else:
                     raise error.ParameterError(field, value, "Argument must be an integer.")
 
@@ -294,7 +294,7 @@ def help_text():
     text = ('-LSystemsGifs Help-\n'
             'To supply settings, start your message with "SETTINGS".'
             'Then provide the following parameters in any order, each on a new line:\n\n' 
-            'iterations: positive integer - Number of iterations between 0 - 5.\n'
+            'iterations: positive integer - Number of iterations between 1 and 5.\n'
             'start: colour - Starting colour of the tree (roots).\n'
             'end: colour - Ending colour of the tree (branch tips).\n'
             'fruit: colour - Colour of fruits, if any.\n'
