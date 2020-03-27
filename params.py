@@ -1,19 +1,14 @@
-COLOURS = {
-	"white": "#FFFFFF",
-	"black": "#000000",
-	"pink": "#EC99B2",
-	"yellow": "#FFFF78",
-	"gray": "#8E8E8E",
-	"dark_gray": "#4C4C4C",
-	"blue": "#82E8FF",
-	"red": "#FF8787",
-	"green": "#74FF70",
-	"brown": "#BA6247",
-	"purple": "#E356FF",
-	"orange": "#FFA24F",
-	"beige": "#ffd89b",
-	"dark_blue": "#19547b"
-}
+from colour import RGB_TO_COLOR_NAMES as palette
+from util import Util
+
+COLOURS = {}
+
+for val_rgb in palette.keys():
+	val_hex = Util.rgb_to_hex(val_rgb)
+	alt_colour_names = palette[val_rgb]
+	for colour in alt_colour_names:
+		colour = Util.to_snake_case(colour)
+		COLOURS[colour] = val_hex
 
 GRADIENTS = {
 	"transrights": {"start": "blue", "end": "pink"},
@@ -26,5 +21,8 @@ GRADIENTS = {
 	 
 }
 
-
 TIMEOUT = 20
+
+def main():
+	print(COLOURS)
+if __name__=="__main__": main()
