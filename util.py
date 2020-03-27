@@ -169,6 +169,40 @@ class Util:
 	def get_random():
 		return random.random()
 
+	@staticmethod
+	def clean_whitespace(string):
+		string = string.strip()
+		cleaned_string = ""
+		in_ws = False
+		for char in string:
+			if char.isspace():
+				if in_ws:
+					continue
+				cleaned_string += " "
+				in_ws = True
+			else:
+				cleaned_string += char
+				in_ws = False
+		return cleaned_string
+
+
+	@staticmethod
+	def to_snake_case(camel_string):
+		idx = 0
+		snaked_string = ""
+		for char in camel_string:
+			if char.isupper():
+				if idx > 0:
+					snaked_string += "_{}".format(char.lower())
+				else:
+					snaked_string += char.lower()
+			else:
+				snaked_string += char
+
+			idx += 1
+
+		return snaked_string
+
 
 if __name__ == "__main__":
 	# c1 = "#e39046"
