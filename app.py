@@ -162,8 +162,8 @@ def parse_settings(settings):
     for i, line in enumerate(lines):
         f_v = line.split(":")
         if len(f_v) == 2:
-            field = f_v[0].lower()
-            value = f_v[1].lower()
+            field = f_v[0].lower().strip()
+            value = f_v[1].lower().strip()
 
             if not field_exists(field, DEFAULT_SETTINGS):
                 raise error.ParameterDoesNotExistError(field)
