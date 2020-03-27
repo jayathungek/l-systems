@@ -10,6 +10,8 @@ for val_rgb in palette.keys():
 		colour = Util.to_snake_case(colour)
 		COLOURS[colour] = val_hex
 
+COLOURS['teal'] = '#008080'
+
 GRADIENTS = {
 	"transrights": {"start": "blue", "end": "pink"},
 	"": {"start": "pink", "end": "white"},
