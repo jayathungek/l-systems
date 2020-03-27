@@ -70,10 +70,8 @@ def webhook():
 
 
                     msg = "" 
-                    if is_at_beginning("SETTINGS\n", message_text):
-                        oplen = len("SETTINGS\n")
-
-                        print(message_text[oplen:])
+                    if is_at_beginning("settings\n", message_text):
+                        oplen = len("settings\n") 
                         try:
                             settings = parse_settings(message_text[oplen:])
                             msg = "Generating tree from settings...please wait."
@@ -97,7 +95,7 @@ def webhook():
                         except error.ResponseTimeoutError as e:
                             send_message(sender_id, "Error: " + e.message) 
 
-                    elif is_at_beginning("RANDOM", message_text):
+                    elif is_at_beginning("random", message_text):
                         msg = "Generating random tree...please wait.\n"
                         send_message(sender_id, msg)
                         try:
@@ -121,11 +119,16 @@ def webhook():
                         except error.ResponseTimeoutError as e:
                             send_message(sender_id, "Error: " + e.message) 
 
-                    elif is_at_beginning("HELP", message_text):
+                    elif is_at_beginning("help", message_text):
                         msg = help_text() 
                         example = example_text()
                         send_message(sender_id, msg)
                         send_message(sender_id, example)
+
+                    elif is_at_beginning("colours", message_text):
+                        msg = colours_text()
+                        send_message(sender_id, msg)
+
                     else:
                         msg = greeting_text()
                         send_message(sender_id, msg)
@@ -291,7 +294,7 @@ def create_random_image(settings):
     return image_name
 
 def help_text():
-    text = ('-LSystemsGifs Help-\n'
+    text = ('-TreeGifs Help-\n'
             'To supply settings, start your message with "SETTINGS".'
             'Then provide the following parameters in any order, each on a new line:\n\n' 
             'iterations: positive integer - Number of iterations between 1 and 5.\n'
@@ -302,6 +305,7 @@ def help_text():
             'scale: positive real number - Size multiplier for tree segments.\n'
             'fruit_density: positive real number - Relative frequency of fruits.\n'
             'leaf_density: positive real number - Relative frequency of leaves.\n\n'
+            'To see an exhaustive list of all the colours supported, type COLOURS.\n\n'
             'The following message will have an example that you can copy and try out:'
             )
     return text
@@ -319,11 +323,17 @@ def example_text():
             )
     return text
 
-
 def greeting_text():
     text = ('Hello! To interact with this bot, please provide some settings or type '
-            '"HELP" to see how to do so.'
+            '"HELP" to see how to do so. To see an exhaustive list of all the '
+            'colours supported, type COLOURS.'
             )
+    return text
+
+def colours_text():
+    text = "VALID COLOURS:\n"
+    for colour in sorted(params.COLOURS.keys()):
+        text += "{}\n".format(colour)
     return text
 
 
@@ -331,6 +341,7 @@ def greeting_text():
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support 
     app.run(threaded=True, port=5000)
+    # print(colours_text())
     # settings = json.dumps(DEFAULT_SETTINGS) 
     # image = create_random_image(settings)()
     # print(image)
