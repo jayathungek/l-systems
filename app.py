@@ -305,7 +305,7 @@ def help_text():
             'scale: positive real number - Size multiplier for tree segments.\n'
             'fruit_density: positive real number - Relative frequency of fruits.\n'
             'leaf_density: positive real number - Relative frequency of leaves.\n\n'
-            'To see an exhaustive list of all the colours supported, type COLOURS.\n\n'
+            'To see an exhaustive list of all the colours supported, type "COLOURS".\n\n'
             'The following message will have an example that you can copy and try out:'
             )
     return text
@@ -326,7 +326,7 @@ def example_text():
 def greeting_text():
     text = ('Hello! To interact with this bot, please provide some settings or type '
             '"HELP" to see how to do so. To see an exhaustive list of all the '
-            'colours supported, type COLOURS.'
+            'colours supported, type "COLOURS".'
             )
     return text
 
