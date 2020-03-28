@@ -8,10 +8,10 @@ from util import Util
 import params
 
 class LSystem:
+	REQ_FIELDS_FRONTEND = ["iterations", "start", "end", "fruit", "leaf", "scale", "fruit_density", "leaf_density"] 
 	def __init__(self, settings, random=False, cmd=True, exclude=[]):
 		self.DEFAULT_IMG_DIR = "./"
 		self.REQUIRED_FIELDS = ["alphabet", "axiom", "rules", "iterations", "animate", "graphics_class"]
-		self.REQ_FIELDS_FRONTEND = ["iterations", "start", "end", "fruit", "leaf", "scale", "fruit_density", "leaf_density"] 
 		self.settings = None 
 		self.handler = None 
 
