@@ -8,9 +8,10 @@ from util import Util
 import params
 
 class LSystem:
-	def __init__(self, settings, random=False, cmd=True ):
+	def __init__(self, settings, random=False, cmd=True, exclude=[]):
 		self.DEFAULT_IMG_DIR = "./"
-		self.REQUIRED_FIELDS = ["alphabet", "axiom", "rules", "iterations", "animate", "graphics_class"] 
+		self.REQUIRED_FIELDS = ["alphabet", "axiom", "rules", "iterations", "animate", "graphics_class"]
+		self.REQ_FIELDS_FRONTEND = ["iterations", "start", "end", "fruit", "leaf", "scale", "fruit_density", "leaf_density"] 
 		self.settings = None 
 		self.handler = None 
 
@@ -20,7 +21,7 @@ class LSystem:
 			self.get_settings_from_json(settings)
 
 		if random:
-			self.randomise_settings()
+			self.randomise_settings(exclude)
 
 		self.import_handler(self.settings["graphics_class"])
 
@@ -120,88 +121,38 @@ class LSystem:
 		image = self.out(lstrings, self.handler)
 		return image
 
-	def randomise_settings(self):
+	def randomise_settings(self, exclude):
 		colours = list(params.COLOURS.keys())
+		leaf_d = Util.get_random()
+		fruit_d = leaf_d/20
 
-		self.settings["iterations"] = Util.random_selection([4, 5])
 		self.settings["angle"] = Util.add_noise(self.settings["angle"], 10) 
 		self.settings["w0"] = Util.random_selection([10, 15, 20, 25])
 
-		leaf_d = Util.get_random()
-		fruit_d = leaf_d/20
-		self.settings["leaf_density"] = leaf_d
-		self.settings["fruit_density"] = fruit_d
-
-		self.settings["leaf_colour"] = Util.random_selection(colours, exclude=["gray", "grey"])
-		self.settings["fruit_colour"] = Util.random_selection(colours, exclude=["gray", "grey"])
-		self.settings["start_colour"] = Util.random_selection(colours, exclude=["gray", "grey"])
-		self.settings["end_colour"] = Util.random_selection(colours, exclude=["gray", "grey"]) 
+		if "iterations" not in exclude:
+			self.settings["iterations"] = Util.random_selection([4, 5])
+		
+		if "leaf_density" not in exclude:
+			self.settings["leaf_density"] = leaf_d
+		
+		if "fruit_density" not in exclude:
+			self.settings["fruit_density"] = fruit_d
+		
+		if "leaf_colour" not in exclude:
+			self.settings["leaf_colour"] = Util.random_selection(colours, exclude=["gray", "grey"])
+		
+		if "fruit_colour" not in exclude:
+			self.settings["fruit_colour"] = Util.random_selection(colours, exclude=["gray", "grey"])
+		
+		if "start_colour" not in exclude:
+			self.settings["start_colour"] = Util.random_selection(colours, exclude=["gray", "grey"])
+		
+		if "end_colour" not in exclude:
+			self.settings["end_colour"] = Util.random_selection(colours, exclude=["gray", "grey"]) 
  
 
 if __name__ == "__main__":
 	settings = sys.argv[1]
 	lsg = LSystem(settings, random=True)
 	lsg.run()
-
-	# s = "!(w)F(s)+(a)[[X]-(a)X]-(a)F(s)[-(a)F(s)X]+(a)X"
-	# s = LSystem.replace_char(s, "a", str(25))
-	# s = LSystem.replace_char(s, "w", str(30))
-	# s = LSystem.replace_char(s, "s", str(5))
-	# print(s)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# def print_help():
-# 	msg= """lsystems help
-# -------------------------------------------
-# Usage: python main.py settings
-# 	where settings is a JSON file whose object
-# 	has the following mandatory fields:
-# 	{
-# 		'alphabet': [...],
-# 		'axiom': string,
-# 		'iterations': int,
-# 		'graphics_class': string,
-# 		'rules': [...]
-# 	}
-
-# 	'alphabet' is a list of ALL valid characters
-# 	that are allowed in the L-system
-	 
-# 	'axiom' is the starting string of the
-# 	L-System, and must be composed of valid 
-# 	characters
-	 
-# 	'iterations' is an integer that defines how
-# 	many times the L-system will evolve
-	 
-# 	'graphics_class' is the name of the class in
-# 	graphics/handlers.py that controls how to
-# 	draw the output from the L-system
-	 
-# 	'rules' is a list of rule objects that define
-# 	how to replace strings from the previous
-# 	iteration. A rule object is defined as:
-# 	{
-# 		 'in': string,
-# 		 'out': string
-# 	}
-# 	where 'in' is the string to match and 'out'
-# 	is its replacement string
-
-# For examples of this in practice, see the
-# examples in graphics/settings"""
-	   
-# 	print(msg)
+ 
