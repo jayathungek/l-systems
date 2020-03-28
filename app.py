@@ -11,8 +11,7 @@ from util import Util
 app = Flask(__name__) 
 
 PLANT_BASE = "./settings/plant_example.json"
-DEFAULT_SETTINGS = Util.get_settings_from_json_file(PLANT_BASE)
-
+DEFAULT_SETTINGS = Util.get_settings_from_json_file(PLANT_BASE) 
 
 @app.route('/', methods=['GET'])
 def verify(): 
@@ -62,7 +61,7 @@ def webhook():
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     try:
-                        message_text = messaging_event["message"]["text"]  # the message's text
+                        message_text = messaging_event["message"]["text"].strip()  # the message's text
                     except KeyError:
                         #not a text message
                         send_message(sender_id, "Please only send text messages.")
@@ -73,9 +72,18 @@ def webhook():
                     if is_at_beginning("settings\n", message_text):
                         oplen = len("settings\n") 
                         try:
-                            settings = parse_settings(message_text[oplen:])
+                            s_p = parse_settings(message_text[oplen:])[0]
+                            settings = s_p[0]
+                            fields_present = s_p[1]
+                            exclude = LSystem.get_missing_fields(LSystem.REQ_FIELDS_FRONTEND, fields_present)
+                            
                             msg = "Generating tree from settings...please wait."
                             send_message(sender_id, msg)
+
+                            if len(exclude) > 0:
+                                image = create_random_image(settings, exclude)()
+                                send_image(sender_id, image) 
+                                break 
                             image = create_image(settings)() 
                             send_image(sender_id, image) 
                             break
@@ -160,8 +168,9 @@ def field_exists(field, settings):
 
 def parse_settings(settings):
     global DEFAULT_SETTINGS
-    lines = settings.split("\n") 
+    lines = settings.split("\n")
 
+    present = []
     for i, line in enumerate(lines):
         f_v = line.split(":")
         if len(f_v) == 2:
@@ -173,6 +182,7 @@ def parse_settings(settings):
 
 
             if field == "iterations":
+                present.append(field)
                 if Util.isInteger(value):
                     value = int(value)
                     if value < 0:
@@ -184,6 +194,7 @@ def parse_settings(settings):
                     raise error.ParameterError(field, value, "Argument must be an integer.")
 
             elif field == "scale":
+                present.append(field)
                 if Util.isNumeric(value):
                     field = "length"
                     value = float(value)
@@ -196,10 +207,12 @@ def parse_settings(settings):
                 try:
                     params.COLOURS[value]
                     field += "_colour"
+                    present.append(field)
                 except KeyError:
                     raise error.ParameterError(field, value, "This colour does not exist.")
 
             elif field == "leaf_density" or field == "fruit_density":
+                present.append(field)
                 if Util.isNumeric(value):
                     value = float(value)
                     if value < 0 or value > 1:
@@ -218,7 +231,7 @@ def parse_settings(settings):
         else:
             raise error.MalformedSettingsError(i) 
 
-    return json.dumps(DEFAULT_SETTINGS)
+    return (json.dumps(DEFAULT_SETTINGS), present)
  
 
 def send_message(recipient_id, message_text):
@@ -287,8 +300,8 @@ def create_image(settings):
     return image_name  
 
 @timeout
-def create_random_image(settings):
-    lsg = LSystem(settings, random=True, cmd=False)
+def create_random_image(settings, exclude):
+    lsg = LSystem(settings, random=True, cmd=False, exclude=exclude)
     image_name = lsg.run()
     print("image created successfully at " + image_name) 
     return image_name
