@@ -84,7 +84,7 @@ def webhook():
                                 image = create_random_image(settings, exclude)()
                                 send_image(sender_id, image) 
                                 break 
-                            image = create_image(settings)() 
+                            image = create_image(settings, [])() 
                             send_image(sender_id, image) 
                             break
 
@@ -293,7 +293,7 @@ def is_at_beginning(word, string):
     return string.lower()[:len(word.lower())] == word.lower()
 
 @timeout
-def create_image(settings): 
+def create_image(settings, exclude): 
     lsg = LSystem(settings, random=False, cmd=False)
     image_name = lsg.run()
     print("image created successfully at " + image_name) 
