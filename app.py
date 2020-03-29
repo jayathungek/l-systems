@@ -39,6 +39,8 @@ def respond():
     else:
         response["CONTENT"] = json.loads(js)
 
+    print("RESPONSE: {}".format(response))
+
     # Return the response in json format
     return response
 
@@ -72,6 +74,7 @@ def webhook():
                     if is_at_beginning("settings\n", message_text):
                         oplen = len("settings\n") 
                         try:
+                            random = False
                             s_p = parse_settings(message_text[oplen:])
                             settings = s_p[0]
                             print(settings)
@@ -83,10 +86,9 @@ def webhook():
                             print(fields_present)
                             print(exclude)
                             if len(exclude) > 0:
-                                image = create_random_image(settings, exclude)()
-                                send_image(sender_id, image) 
-                                break 
-                            image = create_image(settings, [])() 
+                                random = True
+
+                            image = create_image(settings, random, exclude)() 
                             send_image(sender_id, image) 
                             break
 
@@ -110,7 +112,7 @@ def webhook():
                         send_message(sender_id, msg)
                         try:
                             settings = json.dumps(DEFAULT_SETTINGS)
-                            image = create_random_image(settings, [])() 
+                            image = create_image(settings, True, [])() 
                             send_image(sender_id, image) 
                             break
 
@@ -295,18 +297,18 @@ def is_at_beginning(word, string):
     return string.lower()[:len(word.lower())] == word.lower()
 
 @timeout
-def create_image(settings, exclude): 
-    lsg = LSystem(settings, random=False, cmd=False)
+def create_image(settings, random, exclude): 
+    lsg = LSystem(settings, random=random, cmd=False, exclude=exclude)
     image_name = lsg.run()
     print("image created successfully at " + image_name) 
     return image_name  
 
-@timeout
-def create_random_image(settings, exclude):
-    lsg = LSystem(settings, random=True, cmd=False, exclude=exclude)
-    image_name = lsg.run()
-    print("image created successfully at " + image_name) 
-    return image_name
+# @timeout
+# def create_random_image(settings, exclude):
+#     lsg = LSystem(settings, random=True, cmd=False, exclude=exclude)
+#     image_name = lsg.run()
+#     print("image created successfully at " + image_name) 
+#     return image_name
 
 def add_suffixes(l):
     words = []
