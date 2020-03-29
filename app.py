@@ -76,7 +76,7 @@ def webhook():
                             settings = s_p[0]
                             print(settings)
                             fields_present = s_p[1]
-                            exclude = Util.diff_list(LSystem.REQ_FIELDS_FRONTEND, fields_present)
+                            exclude = add_suffixes(Util.diff_list(LSystem.REQ_FIELDS_FRONTEND, fields_present))
                             
                             msg = "Generating tree from settings...please wait."
                             send_message(sender_id, msg)
@@ -306,6 +306,15 @@ def create_random_image(settings, exclude):
     image_name = lsg.run()
     print("image created successfully at " + image_name) 
     return image_name
+
+def add_suffixes(l):
+    words = []
+    for word in l:
+        if word == "start" or word == "end" or word == "fruit" or word == "leaf":
+            word += "_colour"
+        words.append(word)
+
+    return words
 
 def help_text():
     text = ('-TreeGifs Help-\n'

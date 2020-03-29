@@ -138,16 +138,16 @@ class LSystem:
 		if "fruit_density" not in exclude:
 			self.settings["fruit_density"] = fruit_d
 		
-		if "leaf" not in exclude:
+		if "leaf_colour" not in exclude:
 			self.settings["leaf_colour"] = Util.random_selection(colours, exclude=["gray", "grey"])
 		
-		if "fruit" not in exclude:
+		if "fruit_colour" not in exclude:
 			self.settings["fruit_colour"] = Util.random_selection(colours, exclude=["gray", "grey"])
 		
-		if "start" not in exclude:
+		if "start_colour" not in exclude:
 			self.settings["start_colour"] = Util.random_selection(colours, exclude=["gray", "grey"])
 		
-		if "end" not in exclude:
+		if "end_colour" not in exclude:
 			self.settings["end_colour"] = Util.random_selection(colours, exclude=["gray", "grey"]) 
  
 
