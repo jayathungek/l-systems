@@ -74,12 +74,13 @@ def webhook():
                         try:
                             s_p = parse_settings(message_text[oplen:])
                             settings = s_p[0]
+                            print(settings)
                             fields_present = s_p[1]
                             exclude = LSystem.get_missing_fields(LSystem.REQ_FIELDS_FRONTEND, fields_present)
                             
                             msg = "Generating tree from settings...please wait."
                             send_message(sender_id, msg)
-
+                            print(exclude)
                             if len(exclude) > 0:
                                 image = create_random_image(settings, exclude)()
                                 send_image(sender_id, image) 
