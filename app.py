@@ -80,6 +80,7 @@ def webhook():
                             
                             msg = "Generating tree from settings...please wait."
                             send_message(sender_id, msg)
+                            print(fields_present)
                             print(exclude)
                             if len(exclude) > 0:
                                 image = create_random_image(settings, exclude)()
