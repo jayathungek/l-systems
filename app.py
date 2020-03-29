@@ -39,7 +39,7 @@ def respond():
     else:
         response["CONTENT"] = json.loads(js)
 
-    print("RESPONSE: {}".format(response))
+
 
     # Return the response in json format
     return response
@@ -51,7 +51,8 @@ def webhook():
 
     # endpoint for processing incoming messaging events
 
-    data = request.get_json() 
+    data = request.get_json()
+    print("RESPONSE: {}".format(data))
 
     if data["object"] == "page":
 
