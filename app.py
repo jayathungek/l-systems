@@ -76,7 +76,7 @@ def webhook():
                             settings = s_p[0]
                             print(settings)
                             fields_present = s_p[1]
-                            exclude = LSystem.get_missing_fields(LSystem.REQ_FIELDS_FRONTEND, fields_present)
+                            exclude = Util.diff_list(LSystem.REQ_FIELDS_FRONTEND, fields_present)
                             
                             msg = "Generating tree from settings...please wait."
                             send_message(sender_id, msg)
@@ -354,9 +354,7 @@ def colours_text():
 
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support 
-    app.run(threaded=True, port=5000)
-    # print(colours_text())
-    # settings = json.dumps(DEFAULT_SETTINGS) 
-    # image = create_random_image(settings)()
-    # print(image)
-
+    # app.run(threaded=True, port=5000) 
+    # fields_present = ["bloop"]
+    # exclude = Util.diff_list(LSystem.REQ_FIELDS_FRONTEND, fields_present)
+    # print(exclude)

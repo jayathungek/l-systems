@@ -37,7 +37,7 @@ class LSystem:
 			return
 
 	@staticmethod
-	def get_missing_fields(original, test):
+	def get_missing_fields(original, test): 
 		diff = []
 		for field in test:
 			if field not in original:
