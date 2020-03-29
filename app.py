@@ -354,7 +354,7 @@ def colours_text():
 
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support 
-    # app.run(threaded=True, port=5000) 
+    app.run(threaded=True, port=5000) 
     # fields_present = ["bloop"]
     # exclude = Util.diff_list(LSystem.REQ_FIELDS_FRONTEND, fields_present)
     # print(exclude)
