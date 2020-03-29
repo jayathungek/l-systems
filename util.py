@@ -203,6 +203,21 @@ class Util:
 
 		return snaked_string
 
+	@staticmethod
+	def diff_list(l1, l2):
+		larger = l1
+		smaller = l2
+		
+		if len(l1) < len(l2):
+			larger = l2
+			smaller = l1
+
+		diff = []
+		for item in larger:
+			if item not in smaller:
+				diff.append(item)
+
+		return diff
 
 if __name__ == "__main__":
 	# c1 = "#e39046"
