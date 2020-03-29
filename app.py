@@ -72,7 +72,7 @@ def webhook():
                     if is_at_beginning("settings\n", message_text):
                         oplen = len("settings\n") 
                         try:
-                            s_p = parse_settings(message_text[oplen:])[0]
+                            s_p = parse_settings(message_text[oplen:])
                             settings = s_p[0]
                             fields_present = s_p[1]
                             exclude = LSystem.get_missing_fields(LSystem.REQ_FIELDS_FRONTEND, fields_present)
