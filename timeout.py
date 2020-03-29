@@ -6,7 +6,7 @@ import signal
 import params
 
 def timeout(func, seconds=params.TIMEOUT):
-    def decorator(decarg1, decarg2): 
+    def decorator(settings, random, exclude): 
         def _handle_timeout(signum, frame):
             print("timeout triggered")
             raise error.ResponseTimeoutError()
@@ -16,7 +16,7 @@ def timeout(func, seconds=params.TIMEOUT):
             signal.alarm(seconds)
             try:
                 print("starting image creation")
-                result = func(decarg1, decarg2)
+                result = func(settings, random, exclude)
             finally:
                 signal.alarm(0)
             return result
