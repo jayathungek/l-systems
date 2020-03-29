@@ -51,8 +51,7 @@ def webhook():
 
     # endpoint for processing incoming messaging events
 
-    data = request.get_json()
-    print("RESPONSE: {}".format(data))
+    data = request.get_json() 
 
     if data["object"] == "page":
 
