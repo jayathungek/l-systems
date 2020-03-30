@@ -76,8 +76,7 @@ def webhook():
                         try:
                             random = False
                             s_p = parse_settings(message_text[oplen:])
-                            settings = s_p[0]
-                            print(settings)
+                            settings = s_p[0] 
                             fields_present = s_p[1]
                             exclude = add_suffixes(Util.diff_list(LSystem.REQ_FIELDS_FRONTEND, fields_present))
                             

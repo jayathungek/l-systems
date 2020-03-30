@@ -19,7 +19,9 @@ class LSystem:
 			self.get_settings_from_json_file(settings)
 		else:
 			self.get_settings_from_json(settings)
-			print(settings)
+
+			print("SETTINGS: {}".format(settings))
+			print("EXCLUDE: {}".format(exclude))
 
 		if random:
 			self.randomise_settings(exclude)
