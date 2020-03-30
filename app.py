@@ -333,6 +333,10 @@ def help_text():
             'leaf_density: positive real number - Relative frequency of leaves.\n\n'
             'If any of these fields are left out, they will automatically be filled in '
             'with random values.\n\n'
+            'To generate a completely random tree, type "RANDOM".\n\n'
+            'If you type "SHOW" on the same line right after either RANDOM or SETTINGS, '
+            'the bot will send an additional message with a copyable settings list you '
+            'can save and share!\n\n'
             'To see an exhaustive list of all the colours supported, type "COLOURS".\n\n'
             'The following message will have an example that you can copy and try out:'
             )
