@@ -298,14 +298,7 @@ def create_image(settings, random, exclude):
     lsg = LSystem(settings, random=random, cmd=False, exclude=exclude)
     image_name = lsg.run()
     print("image created successfully at " + image_name) 
-    return image_name  
-
-# @timeout
-# def create_random_image(settings, exclude):
-#     lsg = LSystem(settings, random=True, cmd=False, exclude=exclude)
-#     image_name = lsg.run()
-#     print("image created successfully at " + image_name) 
-#     return image_name
+    return image_name
 
 def add_suffixes(l):
     words = []
@@ -328,6 +321,8 @@ def help_text():
             'scale: positive real number - Size multiplier for tree segments.\n'
             'fruit_density: positive real number - Relative frequency of fruits.\n'
             'leaf_density: positive real number - Relative frequency of leaves.\n\n'
+            'If any of these fields are left out, they will automatically be filled in '
+            'with random values.\n\n'
             'To see an exhaustive list of all the colours supported, type "COLOURS".\n\n'
             'The following message will have an example that you can copy and try out:'
             )
