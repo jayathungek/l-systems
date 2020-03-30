@@ -305,6 +305,8 @@ def add_suffixes(l):
     for word in l:
         if word == "start" or word == "end" or word == "fruit" or word == "leaf":
             word += "_colour"
+        elif word == "scale":
+            word = "length"
         words.append(word)
 
     return words
