@@ -69,9 +69,11 @@ def webhook():
                         send_message(sender_id, "Please only send text messages.")
                         break
 
+                    message_text = Util.clean_whitespace(message_text)
+                    message_words = [word.lower() for word in message_text.split(" ")]
+                    send_settings =  len(message_words > 1) and (message_words[1] == "show")
 
-                    msg = "" 
-                    if is_at_beginning("settings\n", message_text):
+                    if message_words[0] is_at_beginning("settings\n", message_text):
                         oplen = len("settings\n") 
                         try:
                             random = False
@@ -85,7 +87,9 @@ def webhook():
                             if len(exclude) > 0:
                                 random = True
 
-                            image = create_image(settings, random, exclude)() 
+                            image, params = create_image(settings, random, exclude)()
+                            if (send_settings):
+                                send_message(sender_id, params)
                             send_image(sender_id, image) 
                             break
 
@@ -109,7 +113,9 @@ def webhook():
                         send_message(sender_id, msg)
                         try:
                             settings = json.dumps(DEFAULT_SETTINGS)
-                            image = create_image(settings, True, [])() 
+                            image, params = create_image(settings, True, [])()
+                            if (send_settings):
+                                send_message(sender_id, params)
                             send_image(sender_id, image) 
                             break
 
@@ -297,8 +303,9 @@ def is_at_beginning(word, string):
 def create_image(settings, random, exclude): 
     lsg = LSystem(settings, random=random, cmd=False, exclude=exclude)
     image_name = lsg.run()
+    image_settings = lsg.get_settings_string()
     print("image created successfully at " + image_name) 
-    return image_name
+    return (image_name, image_settings)
 
 def add_suffixes(l):
     words = []
@@ -358,6 +365,13 @@ def colours_text():
 
 
 
+
+
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support 
     app.run(threaded=True, port=5000)
+    # lsg = LSystem(PLANT_BASE, random=False, cmd=True)
+    # lsg.run()
+    # print(lsg.get_settings_string())
+
+

@@ -159,6 +159,17 @@ class LSystem:
 		if "length" not in exclude:
 			self.settings["length"] = length 
  
+	def get_settings_string(self):
+		string = "SETTINGS\n"
+		string += "iterations:{}\n".format(str(self.settings["iterations"]))
+		string += "start:{}\n".format(self.settings["start_colour"])
+		string += "end:{}\n".format(self.settings["end_colour"])
+		string += "fruit:{}\n".format(self.settings["fruit_colour"])
+		string += "leaf:{}\n".format(self.settings["leaf_colour"])
+		string += "scale:{}\n".format(str(self.settings["length"]))
+		string += "fruit_density:{}\n".format(str(self.settings["fruit_density"]))
+		string += "leaf_density:{}\n".format(str(self.settings["leaf_density"]))
+		return string
 
 if __name__ == "__main__":
 	settings = sys.argv[1]
