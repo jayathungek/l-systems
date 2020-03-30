@@ -69,11 +69,12 @@ def webhook():
                         send_message(sender_id, "Please only send text messages.")
                         break
 
-                    message_text = Util.clean_whitespace(message_text)
-                    message_words = [word.lower() for word in message_text.split(" ")]
+                    text_cleaned = Util.clean_whitespace(message_text)
+                    top_line = text_cleaned.split("\n")[0]
+                    message_words = [word.lower() for word in top_line.split(" ")]
                     send_settings =  len(message_words > 1) and (message_words[1] == "show")
 
-                    if message_words[0] is_at_beginning("settings\n", message_text):
+                    if message_words[0] == "settings":
                         oplen = len("settings\n") 
                         try:
                             random = False

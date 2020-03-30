@@ -170,12 +170,19 @@ class Util:
 		return random.random()
 
 	@staticmethod
+	def is_space(char):
+		if char == "\n":
+			return False
+		else:
+			return char.isspace()
+
+	@staticmethod
 	def clean_whitespace(string):
 		string = string.strip()
 		cleaned_string = ""
 		in_ws = False
 		for char in string:
-			if char.isspace():
+			if Util.is_space(char):
 				if in_ws:
 					continue
 				cleaned_string += " "
