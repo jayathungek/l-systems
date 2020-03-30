@@ -160,15 +160,19 @@ class LSystem:
 			self.settings["length"] = length 
  
 	def get_settings_string(self):
+		tree_l = round(self.settings["length"], 2)
+		fruit_d = round(self.settings["fruit_density"], 2)
+		leaf_d = round(self.settings["leaf_density"], 2)
+
 		string = "SETTINGS\n"
 		string += "iterations:{}\n".format(str(self.settings["iterations"]))
 		string += "start:{}\n".format(self.settings["start_colour"])
 		string += "end:{}\n".format(self.settings["end_colour"])
 		string += "fruit:{}\n".format(self.settings["fruit_colour"])
 		string += "leaf:{}\n".format(self.settings["leaf_colour"])
-		string += "scale:{}\n".format(str(self.settings["length"]))
-		string += "fruit_density:{}\n".format(str(self.settings["fruit_density"]))
-		string += "leaf_density:{}\n".format(str(self.settings["leaf_density"]))
+		string += "scale:{}\n".format(str(tree_l))
+		string += "fruit_density:{}\n".format(str(fruit_d))
+		string += "leaf_density:{}\n".format(str(leaf_d))
 		return string
 
 if __name__ == "__main__":
