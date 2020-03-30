@@ -72,7 +72,7 @@ def webhook():
                     text_cleaned = Util.clean_whitespace(message_text)
                     top_line = text_cleaned.split("\n")[0]
                     message_words = [word.lower() for word in top_line.split(" ")]
-                    send_settings =  len(message_words > 1) and (message_words[1] == "show")
+                    send_settings =  (len(message_words) > 1) and (message_words[1] == "show")
 
                     if message_words[0] == "settings":
                         oplen = len("settings\n") 
