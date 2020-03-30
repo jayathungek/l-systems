@@ -128,6 +128,9 @@ class LSystem:
 		colours = list(params.COLOURS.keys())
 		leaf_d = Util.get_random()
 		fruit_d = leaf_d/20
+		tree_l = Util.get_random()
+		length = tree_l * 10 if tree_l > 0 else 1  
+
 
 		self.settings["angle"] = Util.add_noise(self.settings["angle"], 10) 
 		self.settings["w0"] = Util.random_selection([10, 15, 20, 25])
@@ -151,7 +154,10 @@ class LSystem:
 			self.settings["start_colour"] = Util.random_selection(colours, exclude=["gray", "grey"])
 		
 		if "end_colour" not in exclude:
-			self.settings["end_colour"] = Util.random_selection(colours, exclude=["gray", "grey"]) 
+			self.settings["end_colour"] = Util.random_selection(colours, exclude=["gray", "grey"])
+
+		if "length" not in exclude:
+			self.settings["length"] = length 
  
 
 if __name__ == "__main__":
