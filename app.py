@@ -177,7 +177,7 @@ def field_exists(field, settings):
 def parse_settings(settings):
     global DEFAULT_SETTINGS
     lines = settings.split("\n")
-
+    print(lines)
     present = []
     for i, line in enumerate(lines):
         f_v = line.split(":")
