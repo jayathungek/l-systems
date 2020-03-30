@@ -75,7 +75,7 @@ def webhook():
                     send_settings =  (len(message_words) > 1) and (message_words[1] == "show")
 
                     if message_words[0] == "settings":
-                        oplen = len("settings\n") 
+                        oplen = len(top_line)                         
                         try:
                             random = False
                             s_p = parse_settings(message_text[oplen:])
@@ -176,8 +176,7 @@ def field_exists(field, settings):
 
 def parse_settings(settings):
     global DEFAULT_SETTINGS
-    lines = settings.split("\n")
-    print(lines)
+    lines = settings.split("\n") 
     present = []
     for i, line in enumerate(lines):
         f_v = line.split(":")
