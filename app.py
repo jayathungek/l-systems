@@ -82,9 +82,7 @@ def webhook():
                             exclude = add_suffixes(Util.diff_list(LSystem.REQ_FIELDS_FRONTEND, fields_present))
                             
                             msg = "Generating tree from settings...please wait."
-                            send_message(sender_id, msg)
-                            print(fields_present)
-                            print(exclude)
+                            send_message(sender_id, msg) 
                             if len(exclude) > 0:
                                 random = True
 
@@ -366,7 +364,4 @@ def colours_text():
 
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support 
-    app.run(threaded=True, port=5000) 
-    # fields_present = ["bloop"]
-    # exclude = Util.diff_list(LSystem.REQ_FIELDS_FRONTEND, fields_present)
-    # print(exclude)
+    app.run(threaded=True, port=5000)
