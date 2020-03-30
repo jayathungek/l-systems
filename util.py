@@ -1,10 +1,12 @@
 import random
 import numpy as np
 import json
+import string
 
 class Util:
 	TRUTHY = ["yes", "true", "y", "1", "t"]
 	FALSEY = ["no", "false", "n", "0", "f"]
+	ALPHA  = string.ascii_lowercase
 
 	@staticmethod
 	def add_value_to_hex(hex_string, value, upper_limit, lower_limit):
@@ -226,12 +228,34 @@ class Util:
 
 		return diff
 
+	@staticmethod
+	def alpha_to_int(alpha_string):
+		diff = ord("a")
+		reversed_string = ''.join(reversed(alpha_string))
+		final_sum = 0
+		place = 0
+		for char in reversed_string:
+			num = ord(char) - diff
+			final_sum += (num * pow(26, place))
+			place += 1
+
+		return final_sum
+
+	@staticmethod
+	def get_seed(seed_len):
+		seed = ""
+		for i in range(seed_len):
+			seed += random.choice(Util.ALPHA)
+		return seed
+
+
 if __name__ == "__main__":
 	# c1 = "#e39046"
 	# c2 = "#000000"
 	# c3 = Util.lerp_colour(c1, c2, 0.3141598)
 	# print(c3)
-	s = "1"
-	if Util.isBool(s):
-		print(Util.strToBool(s))
+	# s = "1"
+	# if Util.isBool(s):
+	# 	print(Util.strToBool(s))
+	print(Util.get_seed(6))
 
