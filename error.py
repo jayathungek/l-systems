@@ -32,7 +32,7 @@ class ParameterError(Error):
 
 class ParameterDoesNotExistError(Error):
 	def __init__(self, parameter):
-		self.message = "Parameter {} deos not exist".format(parameter)
+		self.message = "Parameter {} does not exist".format(parameter)
 
 class ResponseTimeoutError(Error):
 	def __init__(self):
