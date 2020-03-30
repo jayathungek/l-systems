@@ -29,9 +29,6 @@ def respond():
     # Retrieve the name from url parameter
     js = request.args.get("json", None)
 
-    # For debugging
-    print("got params {}".format(js))
-
     response = {}
  
     if not js:
