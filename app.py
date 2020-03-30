@@ -78,7 +78,7 @@ def webhook():
                             s_p = parse_settings(message_text[oplen:])
                             settings = s_p[0] 
                             fields_present = s_p[1]
-                            exclude = add_suffixes(Util.diff_list(LSystem.REQ_FIELDS_FRONTEND, fields_present))
+                            exclude = add_suffixes(fields_present)
                             
                             msg = "Generating tree from settings...please wait."
                             send_message(sender_id, msg) 
