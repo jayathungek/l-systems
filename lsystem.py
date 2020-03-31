@@ -11,17 +11,14 @@ class LSystem:
 	REQ_FIELDS_FRONTEND = ["iterations", "start_colour", "end_colour", "fruit_colour", "leaf_colour", "length", "fruit_density", "leaf_density"] 
 	def __init__(self, settings, random=False, cmd=True, exclude=[]):
 		self.DEFAULT_IMG_DIR = "./"
-		self.REQUIRED_FIELDS = ["alphabet", "axiom", "rules", "iterations", "animate", "graphics_class"]
+		self.REQUIRED_FIELDS = ["alphabet", "axiom", "rules", "iterations", "animate", "graphics_class", "seed"]
 		self.settings = None 
 		self.handler = None 
 
 		if cmd:
 			self.get_settings_from_json_file(settings)
 		else:
-			self.get_settings_from_json(settings)
-
-			print("SETTINGS: {}".format(settings))
-			print("EXCLUDE: {}".format(exclude))
+			self.get_settings_from_json(settings) 
 
 		if random:
 			self.randomise_settings(exclude)
@@ -173,6 +170,7 @@ class LSystem:
 		string += "scale:{}\n".format(str(tree_l))
 		string += "fruit_density:{}\n".format(str(fruit_d))
 		string += "leaf_density:{}\n".format(str(leaf_d))
+		string += "seed:{}".format(self.settings["seed"])
 		return string
 
 if __name__ == "__main__":

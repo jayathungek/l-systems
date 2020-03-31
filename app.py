@@ -176,6 +176,7 @@ def parse_settings(settings):
     lines = settings.split("\n")
     print(lines)
     present = []
+    seed = None
     for i, line in enumerate(lines):
         f_v = line.split(":")
         if len(f_v) == 2:
@@ -230,9 +231,14 @@ def parse_settings(settings):
                 else:
                     raise error.ParameterError(field, value, "Must be a truthy or falsey string, eg yes/no, y/n etc.")
 
+            elif field == "seed":
+                seed = value
 
-            
             DEFAULT_SETTINGS[field] = value
+
+            if "seed" not in DEFAULT_SETTINGS.keys():
+                DEFAULT_SETTINGS["seed"] = Util.get_seed(params.SEEDLEN)
+                
         else:
             raise error.MalformedSettingsError(i) 
 
