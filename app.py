@@ -39,7 +39,7 @@ def respond():
 
 @app.route('/', methods=['POST'])
 def webhook():
-    global DEFAULT_SETTINGS 
+    global DEFAULT_SETTINGS
 
     data = request.get_json() 
 
@@ -105,8 +105,8 @@ def webhook():
                         msg = "Generating random tree...please wait.\n"
                         send_message(sender_id, msg)
                         try:
-                            DEFAULT_SETTINGS["seed"] = Util.get_seed(ps.SEEDLEN)
-                            settings = DEFAULT_SETTINGS
+                            settings = DEFAULT_SETTINGS.copy()
+                            settings["seed"] = Util.get_seed(ps.SEEDLEN)
 
                             Util.seed_random(settings["seed"])
                             
@@ -168,6 +168,7 @@ def field_exists(field, settings):
 
 def parse_settings(settings):
     global DEFAULT_SETTINGS
+    new_settings = DEFAULT_SETTINGS.copy()
     lines = settings.split("\n")
     print(lines)
     present = []
@@ -229,15 +230,15 @@ def parse_settings(settings):
             elif field == "seed":
                 seed = value
 
-            DEFAULT_SETTINGS[field] = value
+            new_settings[field] = value
 
         else:
             raise error.MalformedSettingsError(i) 
 
         if seed == None:
-            DEFAULT_SETTINGS["seed"] = Util.get_seed(ps.SEEDLEN)
+            new_settings["seed"] = Util.get_seed(ps.SEEDLEN)
 
-    return (DEFAULT_SETTINGS, present)
+    return (new_settings, present)
  
 
 def send_message(recipient_id, message_text): 
