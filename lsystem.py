@@ -18,7 +18,8 @@ class LSystem:
 		if cmd:
 			self.get_settings_from_json_file(settings)
 		else:
-			self.get_settings_from_json(settings) 
+			# self.get_settings_from_json(settings)
+			self.settings = settings
 
 		if random:
 			self.randomise_settings(exclude)
@@ -122,7 +123,7 @@ class LSystem:
 		return image
 
 	def randomise_settings(self, exclude):
-		
+
 		colours = list(params.COLOURS.keys())
 		leaf_d = Util.get_random()
 		fruit_d = leaf_d/20

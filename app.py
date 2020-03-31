@@ -79,7 +79,7 @@ def webhook():
                             if len(exclude) > 0:
                                 random = True
 
-                            Util.seed_random(DEFAULT_SETTINGS["seed"])
+                            Util.seed_random(settings["seed"])
                             image, params = create_image(settings, random, exclude)()
                             if (send_settings):
                                 send_message(sender_id, params)
@@ -106,9 +106,9 @@ def webhook():
                         send_message(sender_id, msg)
                         try:
                             DEFAULT_SETTINGS["seed"] = Util.get_seed(ps.SEEDLEN)
-                            settings = json.dumps(DEFAULT_SETTINGS)
+                            settings = DEFAULT_SETTINGS
 
-                            Util.seed_random(DEFAULT_SETTINGS["seed"])
+                            Util.seed_random(settings["seed"])
                             
                             image, params = create_image(settings, True, [])()
                             if (send_settings):
@@ -241,7 +241,7 @@ def parse_settings(settings):
         if seed == None:
             DEFAULT_SETTINGS["seed"] = Util.get_seed(ps.SEEDLEN)
 
-    return (json.dumps(DEFAULT_SETTINGS), present)
+    return (DEFAULT_SETTINGS, present)
  
 
 def send_message(recipient_id, message_text): 
