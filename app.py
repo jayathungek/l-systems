@@ -74,10 +74,12 @@ def webhook():
                             exclude = add_suffixes(fields_present)
                             
                             msg = "Generating tree from settings...please wait."
+                            
                             send_message(sender_id, msg) 
                             if len(exclude) > 0:
                                 random = True
 
+                            Util.seed_random(DEFAULT_SETTINGS["seed"])
                             image, params = create_image(settings, random, exclude)()
                             if (send_settings):
                                 send_message(sender_id, params)
@@ -106,6 +108,8 @@ def webhook():
                             DEFAULT_SETTINGS["seed"] = Util.get_seed(ps.SEEDLEN)
                             settings = json.dumps(DEFAULT_SETTINGS)
 
+                            Util.seed_random(DEFAULT_SETTINGS["seed"])
+                            
                             image, params = create_image(settings, True, [])()
                             if (send_settings):
                                 send_message(sender_id, params)
