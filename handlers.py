@@ -27,6 +27,7 @@ class GifMaker:
 
 class PlantHandler:
 	def __init__(self, settings):
+		Util.seed_random(settings["seed"])
 		self.name = "plant"
 		self.settings = settings  
 		self.size = (500, 500)
@@ -55,7 +56,6 @@ class PlantHandler:
 		self.leaves = []
 		self.finished_tree = settings["finished"]
 
-		Util.seed_random(settings["seed"])
 
 	def get_colour_from_thickness(self, thickness):
 		base_thickness = self.settings["w0"]
