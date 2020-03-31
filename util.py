@@ -248,6 +248,11 @@ class Util:
 			seed += random.choice(Util.ALPHA)
 		return seed
 
+	@staticmethod
+	def seed_random(seed):
+		random.seed(seed)
+
+
 
 if __name__ == "__main__":
 	# c1 = "#e39046"
