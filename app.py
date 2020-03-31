@@ -103,8 +103,8 @@ def webhook():
                         msg = "Generating random tree...please wait.\n"
                         send_message(sender_id, msg)
                         try:
+                            DEFAULT_SETTINGS["seed"] = Util.get_seed(ps.SEEDLEN)
                             settings = json.dumps(DEFAULT_SETTINGS)
-                            settings["seed"] = Util.get_seed(ps.SEEDLEN)
 
                             image, params = create_image(settings, True, [])()
                             if (send_settings):
