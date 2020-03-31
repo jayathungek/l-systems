@@ -25,8 +25,7 @@ def verify():
     return "Hello world", 200
 
 @app.route('/params/', methods=['GET'])
-def respond():
-    # Retrieve the name from url parameter
+def respond(): 
     js = request.args.get("json", None)
 
     response = {}
@@ -34,19 +33,13 @@ def respond():
     if not js:
         response["ERROR"] = "no params found, please enter params."
     else:
-        response["CONTENT"] = json.loads(js)
-
-
-
-    # Return the response in json format
+        response["CONTENT"] = json.loads(js) 
     return response
 
 
 @app.route('/', methods=['POST'])
 def webhook():
-    global DEFAULT_SETTINGS
-
-    # endpoint for processing incoming messaging events
+    global DEFAULT_SETTINGS 
 
     data = request.get_json() 
 
@@ -55,7 +48,7 @@ def webhook():
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
 
-                if messaging_event.get("message"):  # someone sent us a message
+                if messaging_event.get("message"):  
 
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
@@ -236,18 +229,16 @@ def parse_settings(settings):
 
             DEFAULT_SETTINGS[field] = value
 
-            if "seed" not in DEFAULT_SETTINGS.keys():
-                DEFAULT_SETTINGS["seed"] = Util.get_seed(params.SEEDLEN)
-                
         else:
             raise error.MalformedSettingsError(i) 
+
+        if seed == None:
+            DEFAULT_SETTINGS["seed"] = Util.get_seed(params.SEEDLEN)
 
     return (json.dumps(DEFAULT_SETTINGS), present)
  
 
-def send_message(recipient_id, message_text):
-
-    # log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
+def send_message(recipient_id, message_text): 
 
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -263,14 +254,9 @@ def send_message(recipient_id, message_text):
             "text": message_text
         }
     })
-    r = requests.post("https://graph.facebook.com/v5.0/me/messages", params=params, headers=headers, data=data)
-    # if r.status_code != 200:
-    #     log(r.status_code)
-    #     log(r.text)
+    r = requests.post("https://graph.facebook.com/v5.0/me/messages", params=params, headers=headers, data=data) 
 
-def send_image(recipient_id, filepath):
-
-    # log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
+def send_image(recipient_id, filepath): 
 
     data = { 
         'recipient': json.dumps({
