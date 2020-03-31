@@ -13,7 +13,6 @@
  "animate": true,
  "angle_leeway": 10,
  "w_factor": 0.8,
- "w0": 15,
  "fruit_density": 0.01,
  "leaf_density": 0.2,
  "leaf_colour": "red",

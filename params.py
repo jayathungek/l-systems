@@ -29,5 +29,5 @@ SEEDLEN = 6
 
 W0 = [10, 15, 20, 25]
 def main():
-	print(COLOURS)
+	print(COLOURS["pink"])
 if __name__=="__main__": main()

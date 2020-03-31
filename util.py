@@ -104,6 +104,7 @@ class Util:
 	    h = Util.rgb_to_hex((int(c_new[0]), int(c_new[1]), int(c_new[2])))
 
 	    if len(h) != 7:
+	    	print(percent)
 	    	print((int(c_new[0]), int(c_new[1]), int(c_new[2])))
 	    return h
 

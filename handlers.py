@@ -31,10 +31,6 @@ class PlantHandler:
 		self.name = "plant"
 		self.settings = settings  
 		self.size = (500, 500)
-		self.startpos = (self.size[0]/2, self.size[1])
-		self.pen = Pen(self.size, Util.random_selection(params.W0) , self.startpos) 
-		self.pen.set_heading(-90)
-		self.stack = []
 
 		self.animate = settings["animate"]
 		self.gifmaker = GifMaker() if self.animate else None
@@ -55,10 +51,15 @@ class PlantHandler:
 		self.leaf_density = settings["leaf_density"]
 		self.leaves = []
 		self.finished_tree = settings["finished"]
+		self.settings["w0"] = Util.random_selection(params.W0)
 
+		self.startpos = (self.size[0]/2, self.size[1])
+		self.pen = Pen(self.size, self.settings["w0"], self.startpos) 
+		self.pen.set_heading(-90)
+		self.stack = []
 
 	def get_colour_from_thickness(self, thickness):
-		base_thickness = self.settings["w0"]
+		base_thickness = self.settings["w0"] 
 		r = thickness/base_thickness
 		return Util.lerp_colour(self.end_colour, self.start_colour, r)
  
@@ -89,7 +90,8 @@ class PlantHandler:
 				self.leaves.append(l) 
 				# self.pen.draw_leaf(10, 10, angle, colour="#EA1CCC") 
 		elif command == "[":
-			self.pen.set_thickness(self.pen.thickness * self.settings["w_factor"])
+			new_thickness = self.pen.thickness * self.settings["w_factor"] 
+			self.pen.set_thickness(new_thickness)
 			self.stack.append({"pos": self.pen.get_pos(), 
 				"heading": self.pen.get_heading(),
 				"thickness": self.pen.get_thickness()})

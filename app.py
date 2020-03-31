@@ -284,7 +284,7 @@ def send_image(recipient_id, filepath):
         'Content-Type': multipart_data.content_type
     }
     r = requests.post("https://graph.facebook.com/v5.0/me/messages", params=params, headers=multipart_header, data=multipart_data)
-    print(r.text)
+    # print(r.text)
 
 def is_at_beginning(word, string):
     if len(word) > len(string):
@@ -367,9 +367,9 @@ def colours_text():
 
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support 
-    app.run(threaded=True, port=5000)
-    # lsg = LSystem(PLANT_BASE, random=False, cmd=True)
-    # lsg.run()
+    # app.run(threaded=True, port=5000)
+    lsg = LSystem(PLANT_BASE, random=False, cmd=True)
+    lsg.run()
     # print(lsg.get_settings_string())
 
 
