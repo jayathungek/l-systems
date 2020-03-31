@@ -21,4 +21,5 @@
  "start_colour": "blue",
  "end_colour": "pink",
  "finished": true,
+ "seed": "abcdef",
  "graphics_class": "PlantHandler"}
