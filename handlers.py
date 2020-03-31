@@ -55,6 +55,8 @@ class PlantHandler:
 		self.leaves = []
 		self.finished_tree = settings["finished"]
 
+		Util.seed_random(settings["seed"])
+
 	def get_colour_from_thickness(self, thickness):
 		base_thickness = self.settings["w0"]
 		r = thickness/base_thickness
