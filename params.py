@@ -25,6 +25,8 @@ GRADIENTS = {
 
 TIMEOUT = 20
 
+SEEDLEN = 6
+
 def main():
 	print(COLOURS)
 if __name__=="__main__": main()
