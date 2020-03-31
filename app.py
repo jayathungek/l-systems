@@ -105,9 +105,9 @@ def webhook():
                         try:
                             settings = json.dumps(DEFAULT_SETTINGS)
                             settings["seed"] = Util.get_seed(params.SEEDLEN)
-                            image, params = create_image(settings, True, [])()
+                            image, p = create_image(settings, True, [])()
                             if (send_settings):
-                                send_message(sender_id, params)
+                                send_message(sender_id, p)
                             send_image(sender_id, image) 
                             break
 
