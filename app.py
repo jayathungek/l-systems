@@ -3,7 +3,7 @@ from requests_toolbelt import MultipartEncoder
 from lsystem import LSystem 
 import json, os, requests
 
-import params
+import params as ps
 import error
 from timeout import timeout
 from util import Util
@@ -104,10 +104,11 @@ def webhook():
                         send_message(sender_id, msg)
                         try:
                             settings = json.dumps(DEFAULT_SETTINGS)
-                            settings["seed"] = Util.get_seed(params.SEEDLEN)
-                            image, p = create_image(settings, True, [])()
+                            settings["seed"] = Util.get_seed(ps.SEEDLEN)
+
+                            image, params = create_image(settings, True, [])()
                             if (send_settings):
-                                send_message(sender_id, p)
+                                send_message(sender_id, params)
                             send_image(sender_id, image) 
                             break
 
@@ -205,7 +206,7 @@ def parse_settings(settings):
             
             elif field == "start" or field == "end" or field == "leaf" or field == "fruit":
                 try:
-                    params.COLOURS[value]
+                    ps.COLOURS[value]
                     field += "_colour"
                     present.append(field)
                 except KeyError:
@@ -234,7 +235,7 @@ def parse_settings(settings):
             raise error.MalformedSettingsError(i) 
 
         if seed == None:
-            DEFAULT_SETTINGS["seed"] = Util.get_seed(params.SEEDLEN)
+            DEFAULT_SETTINGS["seed"] = Util.get_seed(ps.SEEDLEN)
 
     return (json.dumps(DEFAULT_SETTINGS), present)
  
@@ -355,7 +356,7 @@ def greeting_text():
 
 def colours_text():
     text = "VALID COLOURS:\n"
-    for colour in sorted(params.COLOURS.keys()):
+    for colour in sorted(ps.COLOURS.keys()):
         text += "{}\n".format(colour)
     return text
 
