@@ -12,4 +12,5 @@
  "angle_leeway": 10,
  "w_factor": 0.8,
  "angle": 30,
+ "finished": true,
  "graphics_class": "PlantHandler"}
