@@ -182,7 +182,7 @@ def parse_settings(settings):
             field = f_v[0].lower().strip()
             value = f_v[1].lower().strip()
 
-            if not field_exists(field, Util.VALID_FIELDS):
+            if not field_exists(field, LSystem.VALID_FIELDS):
                 raise error.ParameterDoesNotExistError(field)
 
 
