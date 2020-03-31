@@ -32,7 +32,7 @@ class PlantHandler:
 		self.settings = settings  
 		self.size = (500, 500)
 		self.startpos = (self.size[0]/2, self.size[1])
-		self.pen = Pen(self.size, self.settings["w0"], self.startpos) 
+		self.pen = Pen(self.size, Util.random_selection(params.W0) , self.startpos) 
 		self.pen.set_heading(-90)
 		self.stack = []
 

@@ -172,7 +172,7 @@ def parse_settings(settings):
     lines = settings.split("\n")
     print(lines)
     present = []
-    seed = None
+    seed = None 
     for i, line in enumerate(lines):
         f_v = line.split(":")
         if len(f_v) == 2:
@@ -236,7 +236,7 @@ def parse_settings(settings):
             raise error.MalformedSettingsError(i) 
 
         if seed == None:
-            new_settings["seed"] = Util.get_seed(ps.SEEDLEN)
+            new_settings["seed"] = Util.get_seed(ps.SEEDLEN) 
 
     return (new_settings, present)
  

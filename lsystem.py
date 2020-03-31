@@ -132,7 +132,7 @@ class LSystem:
 
 
 		self.settings["angle"] = Util.add_noise(self.settings["angle"], 10) 
-		self.settings["w0"] = Util.random_selection([10, 15, 20, 25])
+		self.settings["w0"] = Util.random_selection(params.W0)
 
 		if "iterations" not in exclude:
 			self.settings["iterations"] = Util.random_selection([4, 5])
