@@ -164,11 +164,7 @@ def field_exists(field, settings):
     elif field == "fruit" or field == "leaf" or field == "start" or field == "end":
         field += "_colour"
 
-    try:
-        settings[field]
-        return True
-    except KeyError:
-        return False
+    return field in settings
 
 def parse_settings(settings):
     global DEFAULT_SETTINGS
